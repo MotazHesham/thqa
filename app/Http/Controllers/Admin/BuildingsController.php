@@ -8,6 +8,8 @@ use App\Http\Requests\MassDestroyBuildingRequest;
 use App\Http\Requests\StoreBuildingRequest;
 use App\Http\Requests\UpdateBuildingRequest;
 use App\Models\Building;
+use App\Models\BuildingDocument;
+use App\Models\BuildingSak;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Owner;
@@ -21,12 +23,30 @@ class BuildingsController extends Controller
 {
     use MediaUploadingTrait;
 
-    public function index()
+    public function index(Request $request)
     {
         abort_if(Gate::denies('building_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $buildings = Building::with(['owner', 'employee', 'country', 'city', 'media'])->get();
+        $buildings = Building::with(['owner.user', 'employee', 'country', 'city', 'media']);
 
+        if($request->has('search')){
+            global $search;
+            $search = $request->search; 
+            $buildings->whereHas('owner.user',function($q){
+                $q->where('name', 'like', '%'.$GLOBALS['search'].'%')
+                ->orWhere('last_name', 'like', '%'.$GLOBALS['search'].'%');
+            })->orWhereHas('employee',function($q){
+                $q->where('name', 'like', '%'.$GLOBALS['search'].'%')
+                ->orWhere('last_name', 'like', '%'.$GLOBALS['search'].'%');
+            })
+            ->orWhereRelation('country','name','like', '%'.$GLOBALS['search'].'%')
+            ->orWhereRelation('city','name','like', '%'.$GLOBALS['search'].'%')
+            ->orWhere('id', 'like', '%'.$GLOBALS['search'].'%')
+            ->orWhere('name', 'like', '%'.$GLOBALS['search'].'%')
+            ->orWhere('address', 'like', '%'.$GLOBALS['search'].'%');
+        }
+
+        $buildings = $buildings->orderBy('created_at','desc')->paginate(10);
         return view('admin.buildings.index', compact('buildings'));
     }
 
@@ -34,9 +54,9 @@ class BuildingsController extends Controller
     {
         abort_if(Gate::denies('building_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $owners = Owner::pluck('identity_num', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $employees = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $owners = Owner::with('user')->get();
+        
+        $employees = User::select('name','last_name', 'id')->where('user_type','staff')->get();
 
         $countries = Country::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -46,9 +66,9 @@ class BuildingsController extends Controller
     }
 
     public function store(StoreBuildingRequest $request)
-    {
+    {   
         $building = Building::create($request->all());
-
+        
         foreach ($request->input('photos', []) as $file) {
             $building->addMedia(storage_path('tmp/uploads/' . basename($file)))->toMediaCollection('photos');
         }
@@ -57,6 +77,27 @@ class BuildingsController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $building->id]);
         }
 
+        foreach($request->saks as $sak){
+            $buildingSak = BuildingSak::create([
+                'building_id' => $building->id,
+                'sak_num' => $sak['num'],
+            ]);
+            if (array_key_exists("photo",$sak) && $sak['photo'] != null) {
+                $buildingSak->addMedia($sak['photo'])->toMediaCollection('photo');
+            }
+        } 
+        foreach($request->documents as $document){
+            $buildingDocument = BuildingDocument::create([
+                'building_id' => $building->id,
+                'file_num' => $document['num'],
+                'file_name' => $document['name'],
+                'file_type' => $document['type'],
+                'file_date' => $document['date'],
+            ]);
+            if (array_key_exists("photo",$document) && $document['photo'] != null) {
+                $buildingDocument->addMedia($document['photo'])->toMediaCollection('photo');
+            }
+        }
         return redirect()->route('admin.buildings.index');
     }
 
@@ -64,9 +105,9 @@ class BuildingsController extends Controller
     {
         abort_if(Gate::denies('building_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $owners = Owner::pluck('identity_num', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $employees = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $owners = Owner::with('user')->get();
+        
+        $employees = User::select('name','last_name', 'id')->where('user_type','staff')->get();
 
         $countries = Country::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -78,7 +119,7 @@ class BuildingsController extends Controller
     }
 
     public function update(UpdateBuildingRequest $request, Building $building)
-    {
+    { 
         $building->update($request->all());
 
         if (count($building->photos) > 0) {
@@ -95,6 +136,33 @@ class BuildingsController extends Controller
             }
         }
 
+
+        foreach($request->saks as $sak){
+            if($sak['num']){
+                $buildingSak = BuildingSak::create([
+                    'building_id' => $building->id,
+                    'sak_num' => $sak['num'],
+                ]);
+                if (array_key_exists("photo",$sak) && $sak['photo'] != null) {
+                    $buildingSak->addMedia($sak['photo'])->toMediaCollection('photo');
+                }
+            }
+        } 
+        foreach($request->documents as $document){
+            if($document['num'] || $document['name'] || $document['type'] || $document['date']){
+                $buildingDocument = BuildingDocument::create([
+                    'building_id' => $building->id,
+                    'file_num' => $document['num'],
+                    'file_name' => $document['name'],
+                    'file_type' => $document['type'],
+                    'file_date' => $document['date'],
+                ]);
+                if (array_key_exists("photo",$document) && $document['photo'] != null) {
+                    $buildingDocument->addMedia($document['photo'])->toMediaCollection('photo');
+                }
+            }
+        }
+
         return redirect()->route('admin.buildings.index');
     }
 
@@ -102,9 +170,12 @@ class BuildingsController extends Controller
     {
         abort_if(Gate::denies('building_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $building->load('owner', 'employee', 'country', 'city', 'buildingBuildingDocuments');
+        $building->load('employee', 'country', 'city', 'buildingBuildingDocuments' , 'buildingBuildingSaks');
+        
+        $owner = Owner::find($building->owner_id);
+        $owner->load('ownerBuildings','user');
 
-        return view('admin.buildings.show', compact('building'));
+        return view('admin.buildings.show', compact('building','owner'));
     }
 
     public function destroy(Building $building)

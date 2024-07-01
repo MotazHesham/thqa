@@ -7,13 +7,13 @@ $(document).ready(function () {
 
   $('.date').datetimepicker({
     format: 'DD/MM/YYYY',
-    locale: 'en',
+    locale: 'en', 
     icons: {
       up: 'fas fa-chevron-up',
       down: 'fas fa-chevron-down',
       previous: 'fas fa-chevron-left',
       next: 'fas fa-chevron-right'
-    }
+    },
   })
 
   $('.datetime').datetimepicker({

@@ -14,12 +14,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RolesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         abort_if(Gate::denies('role_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $roles = Role::with(['permissions'])->get();
+        $roles = Role::with(['permissions']);
 
+        if($request->has('search')){
+            global $search;
+            $search = $request->search; 
+            $roles->where('title', 'like', '%'.$GLOBALS['search'].'%');
+        }
+
+        $roles = $roles->orderBy('created_at','desc')->paginate(10);
         return view('admin.roles.index', compact('roles'));
     }
 

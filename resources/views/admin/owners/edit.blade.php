@@ -1,103 +1,159 @@
-@extends('layouts.admin')
+@extends('layouts.admin') 
 @section('content')
+    <!-- Main Content -->
+    <div class="main-content d-flex flex-column flex-md-row" style="overflow: visible">
+        <div class="container-fluid">
+            <div class="card mb-30">
+                <!-- Form -->
+                <form method="POST" action="{{ route("admin.owners.update", [$owner->id]) }}" enctype="multipart/form-data">
+                    @method('PUT')
+                    @csrf
+                    
+                        <input type="hidden" name="user_id" value="{{ $owner->user_id }}">
 
-<div class="card">
-    <div class="card-header">
-        {{ trans('global.edit') }} {{ trans('cruds.owner.title_singular') }}
+                        <!-- User Details -->
+                        <div class="card-body p-4">
+                            <h4 class="font-20 mb-20">بيانات العميل </h4>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <!-- Form Group -->
+                                    <div class="form-group">
+                                        <label class="font-14 bold mb-2">الاسم الاول</label>
+                                        <input type="text" class="theme-input-style" name="name" placeholder="الاسم الاول"
+                                            required value="{{ old('name', $user->name) }}">
+                                    </div>
+                                </div>
+                                <!-- End Form Group -->
+
+                                <div class="col-lg-6">
+                                    <!-- Form Group -->
+                                    <div class="form-group">
+                                        <label class="font-14 bold mb-2">الاسم الاخير</label>
+                                        <input type="text" class="theme-input-style" name="last_name" placeholder="الاسم الاخير"
+                                            required value="{{ old('last_name', $user->last_name) }}">
+                                    </div>
+                                </div>
+                                <!-- End Form Group -->
+                                <!-- Form Group -->
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="font-14 bold mb-2">البريد الالكتروني</label>
+                                        <input type="email" name="email" value="{{ old('email', $user->email) }}" class="theme-input-style"
+                                            placeholder="البريد الالكتروني للمالك">
+                                    </div>
+                                </div>
+                                <!-- End Form Group -->
+                                <!-- Form Group -->
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="exampleSelect1" class="mb-2 black bold d-block">النوع</label>
+                                        <div class="custom-select style--two">
+                                            <select class="theme-input-style" id="exampleSelect1" name="gender">
+                                                @foreach(App\Models\Owner::GENDER_SELECT as $key => $label)
+                                                    <option value="{{ $key }}" {{ old('gender', $owner->gender) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Form Group -->
+                                <!-- Form Group -->
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="font-14 bold mb-2"> الهاتف</label>
+                                        <input type="number" class="theme-input-style"  name="phone" value="{{ old('phone', $user->phone) }}" placeholder="الجوال">
+                                    </div>
+                                </div>
+                                <!-- End Form Group --> 
+                                <!-- Form Group -->
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="font-14 bold mb-2"> رقم الهوية</label>
+                                        <input type="number" class="theme-input-style" name="identity_num" value="{{ old('identity_num', $owner->identity_num) }}" placeholder="رقم الهوية">
+                                    </div>
+                                </div>
+                                <!-- End Form Group -->
+
+                                <div class="col-lg-6">
+                                    <div class="form-group ">
+                                        <label class="mb-2 black bold">تاريخها</label>
+
+                                        <!-- Date Picker -->
+                                        <div class="dashboard-date style--two">
+                                            <span class="input-group-addon">
+                                                <img src="{{ asset('assets/img/svg/calender.svg') }}" alt=""
+                                                    class="svg">
+                                            </span>
+
+                                            <input type="text" class="date" name="identity_date" value="{{ old('identity_date', $owner->identity_date) }}" placeholder="28 October 2019">
+                                        </div>
+                                    </div>
+                                    <!-- End Date Picker -->
+                                </div>
+
+
+
+                                <!-- Form Group -->
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="font-14 bold mb-2"> العنوان الوطني</label>
+                                        <input type="number" class="theme-input-style"
+                                            placeholder=" العنوان الوطني" name="address" value="{{ old('address', $owner->address) }}">
+                                    </div>
+                                </div>
+                                <!-- End Form Group -->
+                                <!-- Form Group -->
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="font-14 bold mb-2"> السجل التجاري </label>
+                                        <input type="number" class="theme-input-style"
+                                            placeholder=" السجل التجاري " name="commerical_num" value="{{ old('commerical_num', $owner->commerical_num) }}">
+                                    </div>
+                                </div>
+                                <!-- End Form Group -->
+                                <!-- Form Group -->
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="font-14 bold mb-2"> الهوية العقارية </label>
+                                        <input type="number" class="theme-input-style"
+                                            placeholder="الهوية العقارية " name="real_estate_identity" value="{{ old('real_estate_identity', $owner->real_estate_identity) }}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="font-14 bold mb-2"> الصورة الشخصية </label>
+                                        <br>
+                                        <div class="attach-file style--three">
+                                            <div class="upload-button">
+                                                Choose a file
+                                                <input class="file-input" type="file" name="photo">
+                                            </div>
+                                        </div>
+                                        <label class="file_upload mr-2">No file added</label>
+                                    </div>
+                                </div>
+                                <!-- End Form Group -->
+                            </div> 
+                        <!-- End User Details -->
+                        <button class="btn btn-success" type="submit">Save</button>
+                    </div>  
+                </form>
+                <!-- End Form -->
+            </div>
+        </div>
     </div>
-
-    <div class="card-body">
-        <form method="POST" action="{{ route("admin.owners.update", [$owner->id]) }}" enctype="multipart/form-data">
-            @method('PUT')
-            @csrf
-            <div class="form-group">
-                <label for="user_id">{{ trans('cruds.owner.fields.user') }}</label>
-                <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id">
-                    @foreach($users as $id => $entry)
-                        <option value="{{ $id }}" {{ (old('user_id') ? old('user_id') : $owner->user->id ?? '') == $id ? 'selected' : '' }}>{{ $entry }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('user'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('user') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.owner.fields.user_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label>{{ trans('cruds.owner.fields.gender') }}</label>
-                <select class="form-control {{ $errors->has('gender') ? 'is-invalid' : '' }}" name="gender" id="gender">
-                    <option value disabled {{ old('gender', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                    @foreach(App\Models\Owner::GENDER_SELECT as $key => $label)
-                        <option value="{{ $key }}" {{ old('gender', $owner->gender) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('gender'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('gender') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.owner.fields.gender_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="identity_num">{{ trans('cruds.owner.fields.identity_num') }}</label>
-                <input class="form-control {{ $errors->has('identity_num') ? 'is-invalid' : '' }}" type="text" name="identity_num" id="identity_num" value="{{ old('identity_num', $owner->identity_num) }}">
-                @if($errors->has('identity_num'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('identity_num') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.owner.fields.identity_num_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="identity_date">{{ trans('cruds.owner.fields.identity_date') }}</label>
-                <input class="form-control date {{ $errors->has('identity_date') ? 'is-invalid' : '' }}" type="text" name="identity_date" id="identity_date" value="{{ old('identity_date', $owner->identity_date) }}">
-                @if($errors->has('identity_date'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('identity_date') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.owner.fields.identity_date_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="address">{{ trans('cruds.owner.fields.address') }}</label>
-                <input class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" type="text" name="address" id="address" value="{{ old('address', $owner->address) }}">
-                @if($errors->has('address'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('address') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.owner.fields.address_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="commerical_num">{{ trans('cruds.owner.fields.commerical_num') }}</label>
-                <input class="form-control {{ $errors->has('commerical_num') ? 'is-invalid' : '' }}" type="text" name="commerical_num" id="commerical_num" value="{{ old('commerical_num', $owner->commerical_num) }}">
-                @if($errors->has('commerical_num'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('commerical_num') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.owner.fields.commerical_num_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="real_estate_identity">{{ trans('cruds.owner.fields.real_estate_identity') }}</label>
-                <input class="form-control {{ $errors->has('real_estate_identity') ? 'is-invalid' : '' }}" type="text" name="real_estate_identity" id="real_estate_identity" value="{{ old('real_estate_identity', $owner->real_estate_identity) }}">
-                @if($errors->has('real_estate_identity'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('real_estate_identity') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.owner.fields.real_estate_identity_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-danger" type="submit">
-                    {{ trans('global.save') }}
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-
-
+    <!-- End Main Content -->
+@endsection
+@section('scripts')
+    <!-- ======= BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS ======= -->
+    <script src="{{ asset('assets/plugins/jquery-smartwizard/jquery.smartWizard.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jquery-smartwizard/custom-smartWizard.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jquery.steps/jquery.steps.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jquery.steps/custom-jquery-step.js') }}"></script>
+    <!-- ======= End BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS ======= -->
+    <!-- ======= BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS ======= -->
+    <script src="{{ asset('assets/plugins/jquery-repeater/repeater.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jquery-repeater/custom-repeater.js') }}"></script>
+    <!-- ======= End BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS ======= -->
 @endsection

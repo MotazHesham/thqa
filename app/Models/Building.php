@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Database\Eloquent\Builder;
 
 class Building extends Model implements HasMedia
 {
@@ -35,6 +36,11 @@ class Building extends Model implements HasMedia
         'deleted_at',
     ];
 
+    public const DATE_TYPE = [
+        'owned_date' => 'تاريخ التمليك',
+        'registration_date'  => 'تاريخ التسجيل',
+        'created_at'      => 'تاريخ الأضافة للنظام',
+    ];
     public const BUILDING_TYPE_SELECT = [
         'apartment' => 'شقة',
         'building'  => 'عمارة',
@@ -62,6 +68,14 @@ class Building extends Model implements HasMedia
         'deleted_at',
     ];
 
+    protected static function booted(): void
+    {
+        static::addGlobalScope('employee_id', function (Builder $builder) {  
+            if (!auth()->user()->is_admin) {
+                $builder->where('employee_id', auth()->user()->id);
+            }
+        });
+    }
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
@@ -70,12 +84,17 @@ class Building extends Model implements HasMedia
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')->fit('crop', 50, 50);
-        $this->addMediaConversion('preview')->fit('crop', 120, 120);
+        $this->addMediaConversion('preview')->fit('crop', 220, 220);
     }
 
     public function buildingBuildingDocuments()
     {
         return $this->hasMany(BuildingDocument::class, 'building_id', 'id');
+    }
+
+    public function buildingBuildingSaks()
+    {
+        return $this->hasMany(BuildingSak::class, 'building_id', 'id');
     }
 
     public function owner()

@@ -31,6 +31,11 @@ class ChangePasswordController extends Controller
 
         $user->update($request->validated());
 
+        
+        if ($request->photo != null) {
+            $user->addMedia($request->photo)->toMediaCollection('photo');
+        }
+
         return redirect()->route('profile.password.edit')->with('message', __('global.update_profile_success'));
     }
 

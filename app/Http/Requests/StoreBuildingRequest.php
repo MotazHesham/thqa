@@ -66,6 +66,10 @@ class StoreBuildingRequest extends FormRequest
             'photos' => [
                 'array',
             ],
+            'files.*.date' => [
+                'nullable',
+                'date_format:' . config('panel.date_format'),
+            ]
         ];
     }
 }

@@ -18,12 +18,24 @@ class UsersController extends Controller
 {
     use MediaUploadingTrait;
 
-    public function index()
+    public function index(Request $request)
     {
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::with(['roles', 'media'])->get();
+        $users = User::with(['roles', 'media'])->where('user_type','staff'); 
 
+        if($request->has('search')){
+            global $search;
+            $search = $request->search; 
+            $users->where(function($q){
+                $q->where('name', 'like', '%'.$GLOBALS['search'].'%')
+                ->orWhere('last_name', 'like', '%'.$GLOBALS['search'].'%')
+                ->orWhere('email', 'like', '%'.$GLOBALS['search'].'%')
+                ->orWhere('phone', 'like', '%'.$GLOBALS['search'].'%');
+            });
+        }
+
+        $users = $users->orderBy('created_at','desc')->paginate(10);
         return view('admin.users.index', compact('users'));
     }
 

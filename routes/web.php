@@ -47,6 +47,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Countries
     Route::delete('countries/destroy', 'CountriesController@massDestroy')->name('countries.massDestroy');
+    Route::post('countries/get_cities', 'CountriesController@get_cities')->name('countries.get_cities');
     Route::resource('countries', 'CountriesController');
 
     // Cities

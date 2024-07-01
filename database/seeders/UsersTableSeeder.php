@@ -19,6 +19,7 @@ class UsersTableSeeder extends Seeder
                 'approved'       => 1,
                 'phone'          => '',
                 'last_name'      => '',
+                'user_type'      => 'staff',
             ],
         ];
 

@@ -71,6 +71,10 @@ class User extends Authenticatable implements HasMedia
         return $date->format('Y-m-d H:i:s');
     }
 
+    public function getfullNameAttribute(){
+        return $this->name . ' ' . $this->last_name;
+    }
+
     public function getIsAdminAttribute()
     {
         return $this->roles()->where('id', 1)->exists();

@@ -172,7 +172,9 @@ class HomeController
 
         $settings5['data'] = [];
         if (class_exists($settings5['model'])) {
-            $settings5['data'] = $settings5['model']::latest()
+            $settings5['data'] = $settings5['model']::whereHas('users',function($q){
+                $q->where('id',auth()->id());
+            })->latest()
                 ->take($settings5['entries_number'])
                 ->get();
         }

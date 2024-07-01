@@ -14,11 +14,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CitiesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         abort_if(Gate::denies('city_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $cities = City::with(['country'])->get();
+        $cities = City::with(['country']); 
+
+        if($request->has('search')){
+            global $search;
+            $search = $request->search; 
+            $cities->where('name', 'like', '%'.$GLOBALS['search'].'%');
+        }
+
+        $cities = $cities->orderBy('created_at','desc')->paginate(10);
 
         return view('admin.cities.index', compact('cities'));
     }

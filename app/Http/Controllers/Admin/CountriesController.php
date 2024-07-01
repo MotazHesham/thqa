@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyCountryRequest;
 use App\Http\Requests\StoreCountryRequest;
 use App\Http\Requests\UpdateCountryRequest;
+use App\Models\City;
 use App\Models\Country;
 use Gate;
 use Illuminate\Http\Request;
@@ -13,12 +14,24 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CountriesController extends Controller
 {
-    public function index()
+    public function get_cities(Request $request){
+        $cities = City::where('country_id',$request->id)->get()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        return view('admin.countries.cities',compact('cities'));
+    }
+    public function index(Request $request)
     {
         abort_if(Gate::denies('country_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $countries = Country::all();
+        $countries = Country::orderBy('created_at','desc'); 
 
+        if($request->has('search')){
+            global $search;
+            $search = $request->search; 
+            $countries->where('name', 'like', '%'.$GLOBALS['search'].'%')
+            ->orWhere('short_code', 'like', '%'.$GLOBALS['search'].'%');
+        }
+
+        $countries = $countries->paginate(10);
         return view('admin.countries.index', compact('countries'));
     }
 
