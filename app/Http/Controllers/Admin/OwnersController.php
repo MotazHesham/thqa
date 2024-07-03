@@ -57,6 +57,9 @@ class OwnersController extends Controller
             'email' => $request->email,
             'password' => bcrypt('password'),
             'phone' => $request->phone,
+            'phone2' => $request->phone2,
+            'mobile' => $request->mobile,
+            'mobile2' => $request->mobile2,
             'approved' => 1, 
         ]);
 
@@ -96,7 +99,10 @@ class OwnersController extends Controller
             'name' => $request->name ,
             'last_name' => $request->last_name,
             'email' => $request->email, 
-            'phone' => $request->phone, 
+            'phone' => $request->phone,
+            'phone2' => $request->phone2,
+            'mobile' => $request->mobile,
+            'mobile2' => $request->mobile2,
         ]);
 
         $owner->update([  

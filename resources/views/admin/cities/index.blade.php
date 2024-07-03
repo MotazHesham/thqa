@@ -82,8 +82,8 @@
                                             <!-- End Custom Checkbox -->
 
                                         </th>
-                                        <th> المحافظة</th> 
-                                        <th>المدينة</th> 
+                                        <th> المدينة</th> 
+                                        <th>الدولة</th> 
                                         <th></th>
                                     </tr>
                                 </thead>

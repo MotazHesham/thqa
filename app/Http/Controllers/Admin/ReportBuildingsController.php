@@ -102,6 +102,13 @@ class ReportBuildingsController extends Controller
                 });
             } 
 
+            if ($request->from_date != null && $request->to_date != null && $request->date_type != null) {  
+                $from_date = \Carbon\Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $request->from_date . ' ' . '12:00 am')->format('Y-m-d H:i:s');
+                $to_date = \Carbon\Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $request->to_date . ' ' . '11:59 pm')->format('Y-m-d H:i:s'); 
+                $date_type = $request->date_type;
+                $receipts = $buildings->whereBetween($date_type, [$from_date, $to_date]);
+            }
+
             $buildings = $buildings->orderBy('created_at','desc')->paginate(20);
         }
         

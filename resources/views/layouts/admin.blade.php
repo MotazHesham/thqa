@@ -73,9 +73,9 @@
         <header class="header white-bg fixed-top d-flex align-content-center flex-wrap">
             <!-- Logo -->
             <div class="logo">
-                <a href="index.html" class="default-logo"><img src="{{ asset('assets/img/logo.png') }}"
+                <a href="#" class="default-logo"><img src="{{ asset('assets/img/logo.png') }}"
                         alt="" /></a>
-                <a href="index.html" class="mobile-logo"><img src="{{ asset('assets/img/mobile-logo.png') }}"
+                <a href="#" class="mobile-logo"><img src="{{ asset('assets/img/mobile-logo.png') }}"
                         alt="" /></a>
             </div>
             <!-- End Logo -->
@@ -122,8 +122,8 @@
     <!-- ======= BEGIN GLOBAL MANDATORY SCRIPTS ======= -->
 
     <!-- ======= BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS ======= -->
-    <script src="{{ asset('assets/plugins/apex/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/apex/custom-apexcharts.js') }}"></script>
+    {{-- <script src="{{ asset('assets/plugins/apex/apexcharts.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/apex/custom-apexcharts.js') }}"></script> --}}
     <!-- ======= End BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS ======= -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
     <script

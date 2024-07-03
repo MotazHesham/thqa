@@ -50,7 +50,7 @@
                                 </div>
                                 <!-- End Form Group -->
 
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 mb-4">
                                     <!-- Form Group -->
                                     <div class="form-group">
                                         <label class="font-14 bold mb-2"> اسم العقار</label>
@@ -60,7 +60,7 @@
                                 </div>
                                 <!-- End Form Group -->
                                 <!-- Form Group -->
-                                <div class="col-lg-12"> 
+                                <div class="col-lg-12 mt-4"> 
                                     <input
                                         style="width: 300px;background: white;margin: 10px;"
                                         id="pac-input"
@@ -68,13 +68,13 @@
                                         type="text"
                                         placeholder="Search Place"
                                     />
-                                    <div id="map3"  style="width: 100%; height: 400px"></div>
+                                    <div id="map3" class="mb-4"  style="width: 100%; height: 400px"></div>
                                 </div>
                                 <!-- End Form Group -->
                                 <!-- Form Group -->
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label for="exampleSelect1" class="mb-2 black bold d-block"> البلد</label>
+                                        <label for="exampleSelect1" class="mb-2 black bold d-block"> الدولة</label>
                                         <div class="custom-select style--two">
                                             <select class="theme-input-style select2" id="country_id" name="country_id" required
                                                 onchange="get_cities()">
@@ -91,10 +91,10 @@
                                 <!-- Form Group -->
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label for="exampleSelect1" class="mb-2 black bold d-block"> المنطقة / المحافظة</label>
+                                        <label for="exampleSelect1" class="mb-2 black bold d-block"> المدينة </label>
                                         <div class="custom-select style--two" id="cities">
                                             <select class="theme-input-style select2" id="exampleSelect1" required>
-                                                <option value="">اختر منطقة / محافظة</option>
+                                                <option value="">اختر المدينة </option>
                                                 {{-- ajax call --}}
                                             </select>
                                         </div>
@@ -105,8 +105,8 @@
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label class="font-14 bold mb-2"> العنوان </label>
-                                        <input type="number" name="address" value="{{ old('address') }}"
-                                            class="theme-input-style" placeholder="العنوان">
+                                        <input type="text" name="address" value="{{ old('address') }}"
+                                            class="theme-input-style" id="address" placeholder="العنوان">
                                     </div>
                                 </div>
                                 <!-- End Form Group -->
@@ -192,7 +192,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="font-14 bold mb-2"> قرار مساحي </label>
-                                        <input type="number" class="theme-input-style" name="survey_descision"
+                                        <input type="text" class="theme-input-style" name="survey_descision"
                                             value="{{ old('survey_descision') }}" placeholder="قرار مساحي ">
                                     </div>
                                 </div>
@@ -201,7 +201,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="font-14 bold mb-2"> السجل التجاري </label>
-                                        <input type="number" class="theme-input-style" name="commerical_num"
+                                        <input type="text" class="theme-input-style" name="commerical_num"
                                             value="{{ old('commerical_num') }}" placeholder=" السجل التجاري ">
                                     </div>
                                 </div>
@@ -210,7 +210,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="font-14 bold mb-2"> الهوية العقارية </label>
-                                        <input type="number" class="theme-input-style" name="real_estate_identity"
+                                        <input type="text" class="theme-input-style" name="real_estate_identity"
                                             value="{{ old('real_estate_identity') }}" placeholder="الهوية العقارية ">
                                     </div>
                                 </div>

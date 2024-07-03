@@ -82,7 +82,7 @@
                                             <!-- End Custom Checkbox -->
 
                                         </th>
-                                        <th>المدينة </th> 
+                                        <th>الدولة </th> 
                                         <th>code</th> 
                                         <th></th>
                                     </tr>

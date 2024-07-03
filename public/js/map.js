@@ -80,13 +80,35 @@
 
         // Configure the click listener.
         map.addListener("click", (mapsMouseEvent) => { 
+            var lat = mapsMouseEvent.latLng.lat();
+            var lng = mapsMouseEvent.latLng.lng();
 
-            addmarker(mapsMouseEvent.latLng.lat(),mapsMouseEvent.latLng.lng());
+            addmarker(lat,lng);
 
-            $('#map_lat').val(mapsMouseEvent.latLng.lat());
-            $('#map_long').val(mapsMouseEvent.latLng.lng());
+            $('#map_lat').val(lat);
+            $('#map_long').val(lng);
+
+            getPlaceInfo(lat, lng);
         });
     } 
+
+    function getPlaceInfo(lat, lng) {
+        const geocoder = new google.maps.Geocoder();
+        const latlng = { lat: lat, lng: lng };
+
+        geocoder.geocode({ location: latlng }, (results, status) => {
+            if (status === "OK") {  
+                if (results[0]) {
+                    const placeInfo = results[0].formatted_address;
+                    $('#address').val(placeInfo);
+                } else {
+                    console.log('No results found');
+                }
+            } else {
+                console.log('Geocoder failed due to: ' + status);
+            }
+        });
+    }
     
     function addmarker(lat,lng,title = ''){
         for (let i = 0; i < markers.length; i++) {

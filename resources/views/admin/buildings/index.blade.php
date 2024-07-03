@@ -127,9 +127,15 @@
                                                 <a href="{{ route('admin.buildings.edit',$building->id) }}">
                                                     <img src="{{ asset('assets/img/svg/c-edit.svg') }}" alt="" class="svg">
                                                 </a>
-                                                <span class="contact-close">
-                                                    <img src="{{ asset('assets/img/svg/c-close.svg') }}" alt="" class="svg">
-                                                </span>
+                                                @can('owner_delete')
+                                                    <form action="{{ route('admin.buildings.destroy', $building->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                        <input type="hidden" name="_method" value="DELETE">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}"> 
+                                                        <button type="submit" style="background: #ffffff00"> 
+                                                            <img src="{{ asset('assets/img/svg/c-close.svg') }}" alt="" class="svg">
+                                                        </button>
+                                                    </form> 
+                                                @endcan
                                             </td>
                                         </tr> 
                                     @endforeach

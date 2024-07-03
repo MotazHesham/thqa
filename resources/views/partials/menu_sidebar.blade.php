@@ -71,13 +71,13 @@
                         @can('country_access')
                             <li class="{{ request()->is("admin/countries*") ? "active" : "" }}">
                                 <a href="{{ route('admin.countries.index') }}">
-                                    المدن</a>
+                                    الدول</a>
                             </li>
                         @endcan
                         @can('city_access')
                             <li class="{{ request()->is("admin/cities*") ? "active" : "" }}">
                                 <a href="{{ route('admin.cities.index') }}">
-                                    المحافظات</a>
+                                    المدن</a>
                             </li>
                         @endcan
                         @can('user_alert_access')

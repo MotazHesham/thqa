@@ -30,11 +30,17 @@ class UpdateOwnerRequest extends FormRequest
                 'unique:users,email,' . request()->user_id,
             ],
             'phone' => [
-                'string',
+                'size:10',
+                'regex:/(05)[0-9]{8}/', 
+                'nullable',
+            ],
+            'phone2' => [
+                'size:10',
+                'regex:/(05)[0-9]{8}/', 
                 'nullable',
             ],
             'identity_num' => [
-                'string',
+                'size:10',
                 'nullable',
             ],
             'identity_date' => [

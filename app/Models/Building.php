@@ -45,6 +45,11 @@ class Building extends Model implements HasMedia
         'apartment' => 'شقة',
         'building'  => 'عمارة',
         'land'      => 'أرض',
+        'castle'      => 'قصر',
+        'villa'      => 'فيلا',
+        'break'      => 'استراحة',
+        'complex_apartments'      => 'مجمع سكني',
+        'complex_commercial'      => 'مجمع تجاري',
     ];
 
     protected $fillable = [

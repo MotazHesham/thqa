@@ -10,7 +10,7 @@ class CreateOwnersTable extends Migration
     {
         Schema::create('owners', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('gender')->nullable();
+            $table->string('gender')->nullable(); 
             $table->string('identity_num')->nullable();
             $table->date('identity_date')->nullable();
             $table->string('address')->nullable();

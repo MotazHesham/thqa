@@ -78,24 +78,28 @@ class BuildingsController extends Controller
         }
 
         foreach($request->saks as $sak){
-            $buildingSak = BuildingSak::create([
-                'building_id' => $building->id,
-                'sak_num' => $sak['num'],
-            ]);
-            if (array_key_exists("photo",$sak) && $sak['photo'] != null) {
-                $buildingSak->addMedia($sak['photo'])->toMediaCollection('photo');
+            if($sak['num']){
+                $buildingSak = BuildingSak::create([
+                    'building_id' => $building->id,
+                    'sak_num' => $sak['num'],
+                ]);
+                if (array_key_exists("photo",$sak) && $sak['photo'] != null) {
+                    $buildingSak->addMedia($sak['photo'])->toMediaCollection('photo');
+                }
             }
         } 
         foreach($request->documents as $document){
-            $buildingDocument = BuildingDocument::create([
-                'building_id' => $building->id,
-                'file_num' => $document['num'],
-                'file_name' => $document['name'],
-                'file_type' => $document['type'],
-                'file_date' => $document['date'],
-            ]);
-            if (array_key_exists("photo",$document) && $document['photo'] != null) {
-                $buildingDocument->addMedia($document['photo'])->toMediaCollection('photo');
+            if($document['num'] || $document['name'] || $document['type'] || $document['date']){
+                $buildingDocument = BuildingDocument::create([
+                    'building_id' => $building->id,
+                    'file_num' => $document['num'],
+                    'file_name' => $document['name'],
+                    'file_type' => $document['type'],
+                    'file_date' => $document['date'],
+                ]);
+                if (array_key_exists("photo",$document) && $document['photo'] != null) {
+                    $buildingDocument->addMedia($document['photo'])->toMediaCollection('photo');
+                }
             }
         }
         return redirect()->route('admin.buildings.index');

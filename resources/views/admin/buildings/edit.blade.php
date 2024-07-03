@@ -69,7 +69,7 @@
                                         type="text"
                                         placeholder="Search Place"
                                     />
-                                    <div id="map3"  style="width: 100%; height: 400px"></div>
+                                    <div id="map3" class="mb-4"  style="width: 100%; height: 400px"></div>
                                 </div>
                                 <!-- End Form Group -->
                                 <!-- Form Group -->
@@ -107,7 +107,7 @@
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label class="font-14 bold mb-2"> العنوان </label>
-                                        <input type="number" name="address" value="{{ old('address',$building->address) }}"
+                                        <input type="text" name="address" value="{{ old('address',$building->address) }}"
                                             class="theme-input-style" placeholder="العنوان">
                                     </div>
                                 </div>

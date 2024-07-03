@@ -4,6 +4,22 @@
     <div class="main-content d-flex flex-column flex-md-row" style="overflow: visible">
         <div class="container-fluid">
             <div class="card mb-30">
+                @if(session('message'))
+                    <div class="row mb-2">
+                        <div class="col-lg-12">
+                            <div class="alert alert-success" role="alert">{{ session('message') }}</div>
+                        </div>
+                    </div>
+                @endif
+                @if($errors->count() > 0)
+                    <div class="alert alert-danger">
+                        <ul class="list-unstyled">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif 
                 <!-- Form -->
                 <form method="POST" action="{{ route('admin.owners.store') }}" enctype="multipart/form-data">
                     @csrf  
@@ -55,10 +71,28 @@
                                 </div>
                                 <!-- End Form Group -->
                                 <!-- Form Group -->
-                                <div class="col-lg-12">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label class="font-14 bold mb-2"> الجوال</label>
+                                        <input type="number" class="theme-input-style"  name="phone" value="{{ old('phone', '') }}" placeholder="الجوال">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label class="font-14 bold mb-2"> جوال أخر</label>
+                                        <input type="number" class="theme-input-style"  name="phone2" value="{{ old('phone2', '') }}" placeholder="جوال أخر">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <label class="font-14 bold mb-2"> الهاتف</label>
-                                        <input type="number" class="theme-input-style"  name="phone" value="{{ old('phone', '') }}" placeholder="الجوال">
+                                        <input type="number" class="theme-input-style"  name="mobile" value="{{ old('mobile', '') }}" placeholder="الهاتف">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label class="font-14 bold mb-2"> هاتف أخر</label>
+                                        <input type="number" class="theme-input-style"  name="mobile2" value="{{ old('mobile2', '') }}" placeholder="هاتف أخر">
                                     </div>
                                 </div>
                                 <!-- End Form Group --> 
@@ -94,7 +128,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="font-14 bold mb-2"> العنوان الوطني</label>
-                                        <input type="number" class="theme-input-style"
+                                        <input type="text" class="theme-input-style"
                                             placeholder=" العنوان الوطني" name="address" value="{{ old('address', '') }}">
                                     </div>
                                 </div>
@@ -103,7 +137,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="font-14 bold mb-2"> السجل التجاري </label>
-                                        <input type="number" class="theme-input-style"
+                                        <input type="text" class="theme-input-style"
                                             placeholder=" السجل التجاري " name="commerical_num" value="{{ old('commerical_num', '') }}">
                                     </div>
                                 </div>
@@ -112,7 +146,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="font-14 bold mb-2"> الهوية العقارية </label>
-                                        <input type="number" class="theme-input-style"
+                                        <input type="text" class="theme-input-style"
                                             placeholder="الهوية العقارية " name="real_estate_identity" value="{{ old('real_estate_identity', '') }}">
                                     </div>
                                 </div>

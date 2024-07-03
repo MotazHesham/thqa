@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-xl-4 col-sm-6">
                     <!-- Card -->
-                    <div class="card mb-30 shadow">
+                    <a href="{{ route('admin.buildings.index') }}" class="card mb-30 shadow">
                         <div class="state">
                             <div class="d-flex align-items-center flex-wrap">
                                 <div class="state-icon d-flex justify-content-center">
@@ -25,13 +25,13 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                     <!-- End Card -->
                 </div>
 
                 <div class="col-xl-4 col-sm-6">
                     <!-- Card -->
-                    <div class="card shadow mb-30">
+                    <a href="{{ route('admin.owners.index') }}" class="card shadow mb-30">
                         <div class="state">
                             <div class="d-flex align-items-center flex-wrap">
                                 <div class="state-icon d-flex justify-content-center">
@@ -45,13 +45,13 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                     <!-- End Card -->
                 </div>
 
                 <div class="col-xl-4 col-sm-6">
                     <!-- Card -->
-                    <div class="card mb-30 shadow">
+                    <a href="{{ route('admin.buildings.index') }}" class="card mb-30 shadow">
                         <div class="state">
                             <div class="d-flex align-items-center flex-wrap">
                                 <div class="state-icon d-flex justify-content-center">
@@ -65,10 +65,27 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                     <!-- End Card -->
                 </div>
 
+
+                <div class="col-md-4"> 
+                    <div class="card mb-30 shadow">
+                        <div class="card-body">
+                            <h3>{!! $chart7->options['chart_title'] !!}</h3>
+                            {!! $chart7->renderHtml() !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8"> 
+                    <div class="card mb-30 shadow">
+                        <div class="card-body">
+                            <h3>{!! $chart6->options['chart_title'] !!}</h3>
+                            {!! $chart6->renderHtml() !!} 
+                        </div>
+                    </div>
+                </div>
                 <div class="col-xl-6">
                     <!-- Card -->
                     <div class="card mb-30 shadow">
@@ -221,3 +238,7 @@
         </div>
     </div>
 @endsection 
+@section('scripts')
+@parent
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>{!! $chart6->renderJs() !!}{!! $chart7->renderJs() !!}
+@endsection

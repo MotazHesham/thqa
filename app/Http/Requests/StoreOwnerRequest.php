@@ -30,11 +30,17 @@ class StoreOwnerRequest extends FormRequest
                 'unique:users',
             ], 
             'phone' => [
-                'string',
+                'size:10',
+                'regex:/(05)[0-9]{8}/', 
                 'nullable',
             ],
-            'identity_num' => [
-                'string',
+            'phone2' => [
+                'size:10',
+                'regex:/(05)[0-9]{8}/', 
+                'nullable',
+            ],
+            'identity_num' => [ 
+                'size:10',
                 'nullable',
             ],
             'identity_date' => [

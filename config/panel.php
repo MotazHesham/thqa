@@ -2,7 +2,7 @@
 
 return [
     'date_format'         => 'd/m/Y',
-    'time_format'         => 'H:i:s',
+    'time_format'         => 'h:i a',
     'primary_language'    => 'ar',
     'available_languages' => [
         'ar' => 'Arabic',

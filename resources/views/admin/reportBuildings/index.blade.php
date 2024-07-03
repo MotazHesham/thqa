@@ -36,7 +36,7 @@
                                             <img src="{{ asset('assets/img/svg/calender.svg') }}" alt="" class="svg" />
                                         </span>
 
-                                        <input type="text" class="date" name="from_date" value="{{ $from_date }}" id="default-date" placeholder="اختر التاريخ" />
+                                        <input type="text" class="date" name="from_date" value="{{ request('from_date') }}" id="default-date" placeholder="اختر التاريخ" />
                                     </div>
                                     <!-- End Date Picker -->
                                 </div>
@@ -54,7 +54,7 @@
                                             <img src="{{ asset('assets/img/svg/calender.svg') }}" alt="" class="svg" />
                                         </span>
 
-                                        <input type="text" class="date" name="to_date" value="{{ $to_date }}" id="formate-date" placeholder="اختر التاريخ" />
+                                        <input type="text" class="date" name="to_date" value="{{ request('to_date') }}" id="formate-date" placeholder="اختر التاريخ" />
                                     </div>
                                     <!-- End Date Picker -->
                                 </div>
