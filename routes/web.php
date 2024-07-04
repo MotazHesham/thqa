@@ -78,6 +78,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('report-saks/destroy', 'ReportSaksController@massDestroy')->name('report-saks.massDestroy');
     Route::resource('report-saks', 'ReportSaksController');
 
+    Route::get('map','MapController@index')->name('map.index');
+
     Route::get('global-search', 'GlobalSearchController@search')->name('globalSearch');
     Route::get('messenger', 'MessengerController@index')->name('messenger.index');
     Route::get('messenger/create', 'MessengerController@createTopic')->name('messenger.createTopic');

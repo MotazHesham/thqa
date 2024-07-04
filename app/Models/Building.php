@@ -51,6 +51,16 @@ class Building extends Model implements HasMedia
         'complex_apartments'      => 'مجمع سكني',
         'complex_commercial'      => 'مجمع تجاري',
     ];
+    public const BUILDING_TYPE_ICONS = [
+        'apartment' => 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+        'building'  => 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+        'land'      => 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        'castle'      => 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+        'villa'      => 'https://maps.google.com/mapfiles/ms/icons/purple-dot.png',
+        'break'      => 'https://maps.google.com/mapfiles/ms/icons/pink-dot.png',
+        'complex_apartments'      => 'https://maps.google.com/mapfiles/ms/icons/orange-dot.png',
+        'complex_commercial'      => 'https://maps.google.com/mapfiles/ms/icons/ltblue-dot.png',
+    ];
 
     protected $fillable = [
         'owner_id',
@@ -80,6 +90,18 @@ class Building extends Model implements HasMedia
                 $builder->where('employee_id', auth()->user()->id);
             }
         });
+    }
+
+    public function get_details(){
+        return '<p>' . $this->name . '</p>' . '<p>' . Building::BUILDING_TYPE_SELECT[$this->building_type] . '</p>';
+    }
+
+    public function get_images(){
+        $images = '';
+        foreach($this->photos as $media){
+            $images .= '<a href="'.$media->getUrl().'" target="_blanc"><img src="'.$media->getUrl("thumb") .'" alt="" /></a>';
+        } 
+        return $images;
     }
     protected function serializeDate(DateTimeInterface $date)
     {

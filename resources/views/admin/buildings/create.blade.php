@@ -80,7 +80,7 @@
                                                 onchange="get_cities()">
                                                 @foreach ($countries as $id => $entry)
                                                     <option value="{{ $id }}"
-                                                        {{ (old('country_id') ? old('country_id') : $building->country->id ?? '') == $id ? 'selected' : '' }}>
+                                                        {{ 188 == $id ? 'selected' : '' }}>
                                                         {{ $entry }}</option>
                                                 @endforeach
                                             </select>
@@ -479,6 +479,7 @@
         }
     </script>
     <script>
+        window.onload = get_cities();
         function get_cities() {
             var country_id = $('#country_id').val();
             $.ajax({

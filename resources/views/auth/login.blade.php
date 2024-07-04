@@ -54,7 +54,7 @@
                             <!-- Form Group -->
                             <div class="form-group mb-20">
                                 <label for="text" class="mb-2 font-14 bold black">البريد الألكتروني</label>
-                                <input type="email" id="text" name="email" class="theme-input-style"
+                                <input type="email" id="text" name="email" value="{{ old('email') }}" class="theme-input-style"
                                     placeholder="البريد الأكتروني"  required autocomplete="email" autofocus>
                             </div>
                             <!-- End Form Group -->

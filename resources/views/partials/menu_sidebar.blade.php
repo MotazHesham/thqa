@@ -41,7 +41,13 @@
                         @endcan
                     </ul>
                     <!-- End Sub Menu -->
-                </li>
+                </li>  
+                <li>
+                    <a href="{{ route('admin.map.index') }}">
+                        <i class="icofont-ui-map"></i> 
+                        <span class="link-title">الخريطة</span>
+                    </a>
+                </li>  
             @endcan
 
             @can('general_setting_access')

@@ -1,0 +1,253 @@
+/*  */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap');
+
+*,ul,li{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+
+}
+body{
+    font-family:  Cairo,sans-serif;
+}
+button {
+    cursor: pointer;
+}
+a{
+    text-decoration: none;
+}
+ul{
+    list-style: none;
+}
+
+
+/* nav */
+
+/* style="color: transparent; width: 35px; height: 35px;" */
+.list-icon{
+
+    width:35px;
+    height: 35px;
+    border: none;
+    color: transparent;
+}
+.navbar{
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, .14);
+    font-family: "Noto Sans Arabic", sans-serif;
+}
+
+.nav-item{
+    margin: 0 5px;
+   
+}
+.list-button{
+    border: solid 1px #397dde;
+}
+.main-links{
+    white-space: nowrap;
+    gap: .5rem;
+}
+.aqar img{
+    color: transparent;
+}
+
+.map-screan{
+    height: calc(100vh - 61px);
+}
+.nav-list li{
+    transition: all .2s ease-in-out;
+    
+    
+}
+
+.nav-list .nav-item a:hover{
+    background-color: #cfd8dc;
+}
+.nav-item>a{
+    display: inline-flex;
+    gap: .5rem;
+    align-items: center;
+    border: 1px solid #cfd8dc;
+    padding: .4rem 1rem;
+    height: 2.4rem;
+    
+    border-radius: .2rem;
+    overflow: hidden;
+    background: none;
+    color: #141414;
+    font-weight: 500;
+}
+.nav-item .daily{
+    color:#397dde;
+    border: 1px solid #397dde  ;
+}
+.nav-item .map-search{
+    color: #a0a0a0;
+}
+.nav-item .add-item{
+    color: #07a42c;
+    border:1px solid #07a42c;
+}
+
+.profile{
+    color: transparent;
+    margin: 8px;
+
+}
+ .nav-item .profile-btn{
+    border: 1px solid #bbb1b1;
+    border-radius: 3px;
+    background-color: #fffdfdd2;
+}
+
+
+
+/* content */
+.sections a{
+    background: #fff;
+    padding: .4rem .9rem;
+    white-space: nowrap;
+    border: 0;
+    outline: 0;
+    border-radius: 1rem;
+    font-size: 1rem;
+    color: #07a42c;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .14);
+
+    
+
+}
+.sections-content {
+    display: flex;
+    width: 100vw;
+    gap: .5rem;
+    align-items: center;
+    overflow: hidden;
+    padding-inline-start: .5rem;
+    padding: 1rem 0;
+    
+    background: none;
+
+}
+
+.sections{
+    z-index: 55;
+    left: 0;
+    overflow: hidden;
+    top: 2.5rem;
+    border: 0 solid transparent;
+}
+.search-icon{
+    display: inline-flex;
+    /* overflow: hidden; */
+    background-color: white;
+    color: #397dde;
+    border-color: #397dde;
+    gap: .2rem;
+    border: solid 1px;
+    padding: .5rem .8rem;
+    margin-right: 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .14);
+    /* position: relative; */
+}
+/* .search-icon::after{
+    position: absolute;
+    content: "";
+    background-image: url(../assets/search-blue.svg);
+    background-position-x: 50%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    top: 50;
+    right: 40px;
+    
+
+} */
+.controls{
+    position: absolute;
+    color: #838383;
+    gap: .5rem;
+    top: 12rem;
+    left: 1rem;
+    z-index: 55;
+  
+}
+.controls button{
+    box-shadow: 3px 3px 8px 0 rgba(0,0,0,.29);
+    width: 4.2rem;
+    height: 4.2rem;
+    font-size: .7rem;
+    gap: .2rem;
+    border-radius: .5rem;
+    
+    border: none;
+}
+.advertise{
+    color: #707070;
+    left: 50%;
+    bottom: 2rem;
+    transform: translateX(-50%);
+    
+    background: #bbb1b1 !important;
+    
+    
+
+    font-weight: 600;
+    
+    z-index: 55;
+    
+    border-radius: 1rem;
+    padding: 0 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+   
+}
+
+
+
+
+/* /////////////media////////////////// */
+@media (max-width: 860px) {
+    .container-fluid {
+        /* background-color: #141414; */
+        flex-wrap: nowrap;
+        
+    }
+
+    .content {
+        order: 1;
+    }
+    .content-2{
+        order: 2;
+
+    }
+    .nav-item>a{
+        display: inline-flex;
+        /* gap: .5rem; */
+        align-items: center;
+        border: 1px solid #cfd8dc;
+        padding: .4rem 1rem;
+        height: 2.4rem;
+        background-color: #397dde;
+        border-radius: .2rem;
+        overflow: hidden;
+        background: none;
+        color: #141414;
+        font-weight: 500;
+    }
+    .nav-item{
+        margin: 0 3px;
+       
+    }
+
+   
+    
+}
