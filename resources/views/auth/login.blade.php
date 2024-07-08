@@ -90,7 +90,7 @@
                         </form>
                     </div>
 
-                    <div class="col-xl-6 col-lg-6" style="padding: 0">
+                    <div class="col-xl-6 col-lg-6  d-none d-lg-block d-xl-block" style="padding: 0">
                         <div class="login_bg">
 
                         </div>

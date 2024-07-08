@@ -16,7 +16,27 @@
         .active-type{
             background-color: #41af59 !important;
             color: white !important
+        } 
+        
+        #nav-search-items::-webkit-scrollbar {
+            width: 2px;
+            height: 5px;
         }
+
+        #nav-search-items::-webkit-scrollbar-track {
+            background: rgba(184, 34, 34, 0);
+            border-radius: 10px;
+        }
+
+        #nav-search-items::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background: rgba(37, 19, 19, 0.8);
+        }
+
+        #nav-search-items::-webkit-scrollbar-thumb:hover {
+            background: black;
+        }
+
     </style>
 </head>
 
@@ -35,7 +55,7 @@
             </div>
 
             <div class="content-2 " id="navbarNav"> 
-                <ul class="nav-list me-auto d-flex align-items-center justify-content-between"> 
+                <ul class="nav-list me-auto d-flex align-items-center justify-content-between" style="flex-wrap: wrap;"> 
                     <li class="nav-item"> 
                         <select class="form-control select2" id="owner-select" onchange="change_map_markers()">
                             <option value="">أختار المالك</option>
@@ -81,7 +101,7 @@
                 <div id="map" class="map-screan "></div>
                 <div class="sections position-fixed">
                     <div class="sections-content"> 
-                        <div class="main-links d-flex flex-row align-items-center overflow-x-hidden p-2">
+                        <div class="main-links d-flex flex-row align-items-center overflow-x-hidden p-2" id="nav-search-items" style="overflow-x: scroll !important">
                             <a id="0" class="active-type building-type" onclick="change_building_type('all',this)">الكل</a>
                             @foreach (App\Models\Building::BUILDING_TYPE_SELECT as $key => $label)
                                 <a id="0" class="building-type" onclick="change_building_type('{{$key}}',this)"><img src="{{ \App\Models\Building::BUILDING_TYPE_ICONS[$key] }}" alt="">{{ $label }}</a>

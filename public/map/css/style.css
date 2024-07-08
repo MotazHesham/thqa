@@ -11,6 +11,7 @@
 }
 body{
     font-family:  Cairo,sans-serif;
+    overflow-y: hidden;
 }
 button {
     cursor: pointer;
@@ -25,11 +26,12 @@ ul{
 
 /* nav */
 
-/* style="color: transparent; width: 35px; height: 35px;" */
+
+
 .list-icon{
 
     width:35px;
-    height: 35px;
+    height:2.3rem;
     border: none;
     color: transparent;
 }
@@ -40,10 +42,15 @@ ul{
 
 .nav-item{
     margin: 0 5px;
+    text-align: center;
    
 }
 .list-button{
-    border: solid 1px #397dde;
+    border: none;
+}
+.list-button img{
+    color: transparent;
+   
 }
 .main-links{
     white-space: nowrap;
@@ -56,14 +63,29 @@ ul{
 .map-screan{
     height: calc(100vh - 61px);
 }
+.nav-list{
+    display:flex;
+    justify-content: flex-end;
+
+    flex:1 1;
+}
 .nav-list li{
     transition: all .2s ease-in-out;
     
     
 }
+.nav-bar .nav-main{
+    padding: 0 15px;
+}
+.nav-main{
+    gap: 1rem;
+}
 
 .nav-list .nav-item a:hover{
     background-color: #cfd8dc;
+}
+.nav-bar{
+    border-bottom: 1px solid #cfd8dc;
 }
 .nav-item>a{
     display: inline-flex;
@@ -101,6 +123,23 @@ ul{
     border-radius: 3px;
     background-color: #fffdfdd2;
 }
+
+
+/* ////////////////////tabs/////////////////*/
+.tabs{
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -154,21 +193,7 @@ ul{
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .14);
     /* position: relative; */
 }
-/* .search-icon::after{
-    position: absolute;
-    content: "";
-    background-image: url(../assets/search-blue.svg);
-    background-position-x: 50%;
-    background-repeat: no-repeat;
-    background-size: contain;
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    top: 50;
-    right: 40px;
-    
 
-} */
 .controls{
     position: absolute;
     color: #838383;
@@ -194,13 +219,13 @@ ul{
     bottom: 2rem;
     transform: translateX(-50%);
     
-    background: #bbb1b1 !important;
+    background: #ffffff !important;
     
     
 
-    font-weight: 600;
+    font-weight: 900;
     
-    z-index: 55;
+    z-index: 555;
     
     border-radius: 1rem;
     padding: 0 2rem;
@@ -215,7 +240,7 @@ ul{
 
 
 /* /////////////media////////////////// */
-@media (max-width: 860px) {
+@media (max-width: 700px) {
     .container-fluid {
         /* background-color: #141414; */
         flex-wrap: nowrap;
@@ -234,8 +259,8 @@ ul{
         /* gap: .5rem; */
         align-items: center;
         border: 1px solid #cfd8dc;
-        padding: .4rem 1rem;
-        height: 2.4rem;
+        padding: 0.5rem;
+        height: 2rem;
         background-color: #397dde;
         border-radius: .2rem;
         overflow: hidden;
@@ -243,10 +268,109 @@ ul{
         color: #141414;
         font-weight: 500;
     }
+    .nav-item .add-item{
+        background-color: #07a42c;
+    }
+    .nav-item .add-item .plus-icon{
+        color: #fff;
+    }
+   
+    .profile-btn span img{
+           margin: 0;
+    }
+    .nav-item>a span{
+        display: inline-block;
+    }
+    .nav-item>a span img{
+        width: 15px !important;
+        height: 15px !important;
+        display: block;
+        /* vertical-align: middle; */
+        max-width: 100%;
+    }
     .nav-item{
         margin: 0 3px;
        
     }
+    .tabs{
+        display: flex;
+        transition: transform .3s ease-out;
+        flex: 1 1;
+        overflow-x: hidden;
+        /* background-color: #707070; */
+    }
+    .tab-contents{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex: 1 1;
+
+       
+        
+    
+    }
+    .tab-contents a{
+        
+        color: #000000;
+        flex: 1 1;
+        padding: .6rem 0;
+        /* border-bottom: 2px solid #07a42c; */
+        transition: .1s all ease-in;
+    
+    }
+    .tab-contents .active{
+        color: #07a42c;
+        border-bottom: 2px solid #07a42c;
+
+    }
+    .tab-contents a:focus{
+        color: #07a42c;
+        border-bottom: 2px solid #07a42c;
+
+    }
+    .daily-rent{
+        display: none;
+    }
+    .sections{
+        z-index: 55;
+        left: 0;
+        overflow: hidden;
+        top: 6.2rem;
+        border: 0 solid transparent;
+    }
+
+    .controls{
+        
+        display: flex;
+
+
+        top: unset;
+        position: absolute;
+         z-index: 100;
+        /* display: flex; */
+        /* padding: 50px; */
+        
+        align-items: center;
+        justify-content: center;
+        left: 0;
+        width: 100%;
+        bottom: 3rem;
+    
+    }
+    .controls button{
+       
+        width: 3.8rem;
+        height: 3.8rem;
+        
+    }
+    .advertise{
+        bottom: .2rem;
+    }
+   
+
+
+        
+ 
 
    
     
