@@ -13,6 +13,7 @@ class CreateBuildingsTable extends Migration
             $table->string('name');
             $table->string('map_lat');
             $table->string('map_long');
+            $table->text('details')->nullable();
             $table->string('address')->nullable();
             $table->string('building_type');
             $table->string('building_status');

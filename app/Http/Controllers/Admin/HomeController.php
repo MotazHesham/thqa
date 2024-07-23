@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use LaravelDaily\LaravelCharts\Classes\LaravelChart;
+use App\Models\Building;
 
 class HomeController
 {
@@ -213,6 +214,7 @@ class HomeController
         ];
 
         $chart7 = new LaravelChart($settings7);
-        return view('home', compact('settings1', 'settings2', 'settings3', 'settings4', 'settings5','chart6','chart7'));
+        $buildings_count = Building::count();
+        return view('home', compact('settings1', 'settings2', 'settings3', 'settings4', 'settings5','chart6','chart7' ,'buildings_count'));
     }
 }

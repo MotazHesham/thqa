@@ -42,24 +42,26 @@ class Building extends Model implements HasMedia
         'created_at'      => 'تاريخ الأضافة للنظام',
     ];
     public const BUILDING_TYPE_SELECT = [
-        'apartment' => 'شقة',
-        'building'  => 'عمارة',
-        'land'      => 'أرض',
-        'castle'      => 'قصر',
+        'land_space' => 'أرض فضاء',
+        'duplex_villa'  => 'فيلا دوبلكس',
+        'building_residential'      => 'عمارة - سكني',
+        'arch_commercial'      => 'عمارة - تجاري',
         'villa'      => 'فيلا',
         'break'      => 'استراحة',
-        'complex_apartments'      => 'مجمع سكني',
-        'complex_commercial'      => 'مجمع تجاري',
+        'building_residential_commercial'      => 'عمارة - سكني تجاري',
+        'cert_planner'      => 'مخطط معتمد',
+        'raw_land'      => 'أرض خام',
     ];
     public const BUILDING_TYPE_ICONS = [
-        'apartment' => 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-        'building'  => 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
-        'land'      => 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
-        'castle'      => 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+        'land_space' => 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+        'duplex_villa'  => 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+        'building_residential'      => 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        'arch_commercial'      => 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
         'villa'      => 'https://maps.google.com/mapfiles/ms/icons/purple-dot.png',
         'break'      => 'https://maps.google.com/mapfiles/ms/icons/pink-dot.png',
-        'complex_apartments'      => 'https://maps.google.com/mapfiles/ms/icons/orange-dot.png',
-        'complex_commercial'      => 'https://maps.google.com/mapfiles/ms/icons/ltblue-dot.png',
+        'building_residential_commercial'      => 'https://maps.google.com/mapfiles/ms/icons/orange-dot.png',
+        'cert_planner'      => 'https://maps.google.com/mapfiles/ms/icons/ltblue-dot.png',
+        'raw_land'      => 'https://maps.gstatic.com/mapfiles/ms2/micons/blue-pushpin.png',
     ];
 
     protected $fillable = [
@@ -74,8 +76,8 @@ class Building extends Model implements HasMedia
         'registration_date',
         'survey_descision',
         'commerical_num',
-        'real_estate_identity',
-        'employee_id',
+        'real_estate_identity', 
+        'details',
         'country_id',
         'city_id',
         'created_at',
@@ -85,9 +87,12 @@ class Building extends Model implements HasMedia
 
     protected static function booted(): void
     {
-        static::addGlobalScope('employee_id', function (Builder $builder) {  
-            if (!auth()->user()->is_admin) {
-                $builder->where('employee_id', auth()->user()->id);
+        static::addGlobalScope('employees', function (Builder $builder) {  
+            $user = auth()->user();
+            if ($user && !$user->is_admin) {
+                $builder->whereHas('employees',function($q) use($user){
+                    $q->where('employee_id',$user->id);
+                });
             }
         });
     }
@@ -174,5 +179,12 @@ class Building extends Model implements HasMedia
     public function city()
     {
         return $this->belongsTo(City::class, 'city_id');
+
     }
+    
+    public function employees()
+    {
+        return $this->belongsToMany(User::class, 'building_employee', 'building_id', 'employee_id');
+    }
+
 }

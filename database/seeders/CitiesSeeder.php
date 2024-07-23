@@ -18,7 +18,6 @@ class CitiesSeeder extends Seeder
             ['name' => 'جدة', 'country_id' => 188],
             ['name' => 'مكة', 'country_id' => 188],
             ['name' => 'المدينة المنورة', 'country_id' => 188],
-            ['name' => 'ابها', 'country_id' => 188],
             ['name' => 'الدمام', 'country_id' => 188],
             ['name' => 'الخبر', 'country_id' => 188],
             ['name' => 'تبوك', 'country_id' => 188],

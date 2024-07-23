@@ -121,7 +121,12 @@
                                             <td>{{ $building->country->name ?? ''}} - {{ $building->city->name ?? '' }}</td>
                                             <td> <a href="#">{{ $building->owner->user->fullName ?? '' }}</a></td> 
                                             @if(auth()->user()->is_admin)
-                                                <td> <a href="#">{{ $building->employee->fullName ?? '' }}</a></td> 
+                                                {{-- <td> <a href="#">{{ $building->employee->fullName ?? '' }}</a></td>  --}}
+                                                <td>
+                                                    @foreach ($building->employees as $employee)
+                                                        <span class="badge badge-info">{{ $employee->fullName ?? '' }}</span>
+                                                    @endforeach
+                                                </td>
                                             @endif
                                             <td class="actions">
                                                 <a href="{{ route('admin.buildings.edit',$building->id) }}">

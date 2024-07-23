@@ -88,6 +88,16 @@ class BuildingsController extends Controller
                 }
             }
         } 
+
+        if ($request->has('employees')) {
+            if (in_array('all', $request->employees)) {
+                $employees = User::where('user_type','staff')->pluck('id');
+            } else {
+                $employees = $request->employees;
+            }
+            $building->employees()->sync($employees);
+        }
+
         foreach($request->documents as $document){
             if($document['num'] || $document['name'] || $document['type'] || $document['date']){
                 $buildingDocument = BuildingDocument::create([
@@ -139,6 +149,18 @@ class BuildingsController extends Controller
                 $building->addMedia(storage_path('tmp/uploads/' . basename($file)))->toMediaCollection('photos');
             }
         }
+
+        if ($request->has('employees')) {
+            if (in_array('all', $request->employees)) {
+                $employees = User::where('user_type','staff')->pluck('id');
+            } else {
+                $employees = $request->employees;
+            }
+            $building->employees()->sync($employees);
+        } else {
+            $building->employees()->sync([]);
+        }
+
 
 
         foreach($request->saks as $sak){
