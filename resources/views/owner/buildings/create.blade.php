@@ -22,9 +22,10 @@
             @endif
             <!-- End Main Content -->
             <!-- Form -->
-            <form action="{{ route('admin.buildings.update', [$building->id]) }}" method="POST" enctype="multipart/form-data">
-                @method('PUT')
-                @csrf 
+            <form action="{{ route('admin.buildings.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="map_lat" id="map_lat" value="24.6">
+                <input type="hidden" name="map_long" id="map_long" value="46.6">
                 <div class="card mb-30">
                     @csrf
                     <div class="card-body">
@@ -40,7 +41,7 @@
                                             required>
                                             @foreach ($owners as $owner)
                                                 <option value="{{ $owner->id }}"
-                                                    {{ (old('owner_id') ? old('owner_id', $building->owner_id) : $building->owner->id ?? '') == $owner->id ? 'selected' : '' }}>
+                                                    {{ (old('owner_id') ? old('owner_id') : $building->owner->id ?? '') == $owner->id ? 'selected' : '' }}>
                                                     {{ $owner->user->fullName ?? '' }}</option>
                                             @endforeach
                                         </select>
@@ -49,29 +50,17 @@
                             </div>
                             <!-- End Form Group -->
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 mb-4">
                                 <!-- Form Group -->
                                 <div class="form-group">
                                     <label class="font-14 bold mb-2"> اسم العقار</label>
-                                    <input type="text" name="name" value="{{ old('name', $building->name) }}" required
+                                    <input type="text" name="name" value="{{ old('name') }}" required
                                         class="theme-input-style" placeholder="  ">
                                 </div>
                             </div>
                             <!-- End Form Group -->
                             <!-- Form Group -->
-                            <div class="col-lg-2 mt-4"> 
-                                <div class="form-group">
-                                    <label class="font-14 bold mb-2">خط العرض</label>
-                                    <input type="text" name="map_lat" id="map_lat" value="{{ $building->map_lat }}" required
-                                        class="theme-input-style" placeholder="  " onkeyup="changeLatLong()">
-                                </div>  
-                                <div class="form-group">
-                                    <label class="font-14 bold mb-2">خط الطول</label>
-                                    <input type="text" name="map_long" id="map_long" value="{{ $building->map_long }}" required
-                                        class="theme-input-style" placeholder="  " onkeyup="changeLatLong()">
-                                </div> 
-                            </div>
-                            <div class="col-lg-10">
+                            <div class="col-lg-12 mt-4">
                                 <input style="width: 300px;background: white;margin: 10px;" id="pac-input"
                                     class="form-control" type="text" placeholder="Search Place" />
                                 <div id="map3" class="mb-4" style="width: 100%; height: 400px"></div>
@@ -80,13 +69,12 @@
                             <!-- Form Group -->
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="exampleSelect1" class="mb-2 black bold d-block"> البلد</label>
+                                    <label for="exampleSelect1" class="mb-2 black bold d-block"> الدولة</label>
                                     <div class="custom-select style--two">
                                         <select class="theme-input-style select2" id="country_id" name="country_id" required
                                             onchange="get_cities()">
                                             @foreach ($countries as $id => $entry)
-                                                <option value="{{ $id }}"
-                                                    {{ (old('country_id') ? old('country_id', $building->country_id) : $building->country->id ?? '') == $id ? 'selected' : '' }}>
+                                                <option value="{{ $id }}" {{ 188 == $id ? 'selected' : '' }}>
                                                     {{ $entry }}</option>
                                             @endforeach
                                         </select>
@@ -97,14 +85,11 @@
                             <!-- Form Group -->
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="exampleSelect1" class="mb-2 black bold d-block"> المنطقة / المحافظة</label>
+                                    <label for="exampleSelect1" class="mb-2 black bold d-block"> المدينة </label>
                                     <div class="custom-select style--two" id="cities">
-                                        <select class="theme-input-style select2" id="city_id" name="city_id" required>
-                                            @foreach ($cities as $id => $entry)
-                                                <option value="{{ $id }}"
-                                                    {{ (old('city_id') ? old('city_id', $building->city_id) : $building->city->id ?? '') == $id ? 'selected' : '' }}>
-                                                    {{ $entry }}</option>
-                                            @endforeach
+                                        <select class="theme-input-style select2" id="exampleSelect1" required>
+                                            <option value="">اختر المدينة </option>
+                                            {{-- ajax call --}}
                                         </select>
                                     </div>
                                 </div>
@@ -114,8 +99,8 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="font-14 bold mb-2"> العنوان </label>
-                                    <input type="text" name="address" value="{{ old('address', $building->address) }}"
-                                        class="theme-input-style" placeholder="العنوان">
+                                    <input type="text" name="address" value="{{ old('address') }}"
+                                        class="theme-input-style" id="address" placeholder="العنوان">
                                 </div>
                             </div>
                             <!-- End Form Group -->
@@ -127,7 +112,7 @@
                                         <select class="theme-input-style select2" name="building_type" id="exampleSelect1">
                                             @foreach (App\Models\Building::BUILDING_TYPE_SELECT as $key => $label)
                                                 <option value="{{ $key }}"
-                                                    {{ old('building_type', $building->building_type) === (string) $key ? 'selected' : '' }}>
+                                                    {{ old('building_type', 'apartment') === (string) $key ? 'selected' : '' }}>
                                                     {{ $label }}</option>
                                             @endforeach
                                         </select>
@@ -144,14 +129,13 @@
                                             id="exampleSelect1">
                                             @foreach (App\Models\Building::BUILDING_STATUS_SELECT as $key => $label)
                                                 <option value="{{ $key }}"
-                                                    {{ old('building_status', $building->building_status) === (string) $key ? 'selected' : '' }}>
+                                                    {{ old('building_status', 'empty') === (string) $key ? 'selected' : '' }}>
                                                     {{ $label }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                             </div>
-                            <!-- End Form Group -->
                             <!-- End Form Group -->
                             <div class="col-lg-4">
                                 <!-- Form Group -->
@@ -162,17 +146,13 @@
                                                 required>
                                                 @foreach ($employees as $employee)
                                                     <option value="{{ $employee->id }}"
-                                                        {{ (old('employee_id') ? old('employee_id',$building->employee_id) : $building->employee->id ?? '') == $employee->id ? 'selected' : '' }}>
+                                                        {{ (old('employee_id') ? old('employee_id') : $building->employee->id ?? '') == $employee->id ? 'selected' : '' }}>
                                                         {{ $employee->fullName }}</option>
                                                 @endforeach
                                             </select> --}}
-                                        <select name="employees[]" id="employees" class="theme-input-style select2"
-                                            id="exampleSelect1" multiple>
+                                        <select class="theme-input-style select2" id="exampleSelect1" name="employees[]" id="employees" multiple>
                                             @foreach ($employees as $employee)
-                                                <option value="{{ $employee->id }}"
-                                                    {{ in_array($employee->id, $building->employees->pluck('id')->toArray()) ? 'selected' : '' }}>
-                                                    {{ $employee->fullName }}
-                                                </option>
+                                                <option value="{{ $employee->id }}">{{ $employee->fullName }}</option>
                                             @endforeach
                                             <option value="all">اختر الكل</option>
                                         </select>
@@ -196,8 +176,7 @@
                                 <div class="form-group">
                                     <label class="font-14 bold mb-2"> تاريخ التمليك</label>
                                     <input type="text" class="theme-input-style date" name="owned_date"
-                                        value="{{ old('owned_date', $building->owned_date) }}"
-                                        placeholder="تاريخ التمليك">
+                                        value="{{ old('owned_date') }}" placeholder="تاريخ التمليك">
                                 </div>
                             </div>
                             <!-- End Form Group -->
@@ -206,8 +185,7 @@
                                 <div class="form-group">
                                     <label class="font-14 bold mb-2"> تاريخ التسجيل</label>
                                     <input type="text" class="theme-input-style date" name="registration_date"
-                                        value="{{ old('registration_date', $building->registration_date) }}"
-                                        placeholder="تاريخ التسجيل">
+                                        value="{{ old('registration_date') }}" placeholder="تاريخ التسجيل">
                                 </div>
                             </div>
                             <!-- End Form Group -->
@@ -215,9 +193,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="font-14 bold mb-2"> قرار مساحي </label>
-                                    <input type="number" class="theme-input-style" name="survey_descision"
-                                        value="{{ old('survey_descision', $building->survey_descision) }}"
-                                        placeholder="قرار مساحي ">
+                                    <input type="text" class="theme-input-style" name="survey_descision"
+                                        value="{{ old('survey_descision') }}" placeholder="قرار مساحي ">
                                 </div>
                             </div>
                             <!-- End Form Group -->
@@ -225,9 +202,8 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="font-14 bold mb-2"> السجل التجاري </label>
-                                    <input type="number" class="theme-input-style" name="commerical_num"
-                                        value="{{ old('commerical_num', $building->commerical_num) }}"
-                                        placeholder=" السجل التجاري ">
+                                    <input type="text" class="theme-input-style" name="commerical_num"
+                                        value="{{ old('commerical_num') }}" placeholder=" السجل التجاري ">
                                 </div>
                             </div>
                             <!-- End Form Group -->
@@ -235,15 +211,14 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="font-14 bold mb-2"> الهوية العقارية </label>
-                                    <input type="number" class="theme-input-style" name="real_estate_identity"
-                                        value="{{ old('real_estate_identity', $building->real_estate_identity) }}"
-                                        placeholder="الهوية العقارية ">
+                                    <input type="text" class="theme-input-style" name="real_estate_identity"
+                                        value="{{ old('real_estate_identity') }}" placeholder="الهوية العقارية ">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="font-14 bold mb-2"> تفاصيل العقار </label>
-                                    <textarea type="text" class="theme-input-style" name="details" placeholder="تفاصيل العقار ">{{ old('details', $building->details) }}</textarea>
+                                    <textarea type="text" class="theme-input-style" name="details" placeholder="تفاصيل العقار ">{{ old('details') }}</textarea>
                                 </div>
                             </div>
                             <!-- End Form Group -->
@@ -286,26 +261,16 @@
                                 <div class="item-content align-items-center row">
 
                                     <!-- Form Group -->
-                                    <div class="form-group col-lg-2">
+                                    <div class="form-group col-lg-4">
                                         <label for="inputName" class="bold mb-2">رقم الصك</label>
                                         <input type="text" name="saks[1][num]" class="form-control" id="inputName"
                                             placeholder="رقم الصك">
-                                    </div>
-                                    <div class="form-group col-lg-2">
-                                        <label for="inputName" class="bold mb-2">تاريخ الصك</label>
-                                        <input type="text" class="form-control date" name="saks[1][date]"
-                                            id="inputName" placeholder="تاريخ الصك">
-                                    </div>
-                                    <div class="form-group col-lg-2">
-                                        <label for="inputName" class="bold mb-2">تاريخ الصك هجري</label>
-                                        <input type="text" class="form-control hijri-date-input" name="saks[1][date_hijri]"
-                                            id="inputName" placeholder="تاريخ الصك هجري">
                                     </div>
                                     <!-- End Form Group -->
 
 
 
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-7">
                                         <!-- <input type="file"> -->
                                         <div class="attach-file style--three">
                                             <div class="upload-button">
@@ -376,24 +341,9 @@
                                     <!-- End Form Group -->
                                     <!-- Form Group -->
                                     <div class="form-group col-lg-2">
-                                        <label for="inputName" class="bold mb-2">تاريخ البداية</label>
+                                        <label for="inputName" class="bold mb-2">تاريخ المستند</label>
                                         <input type="text" class="form-control date" name="documents[1][date]"
-                                            id="inputName" placeholder="تاريخ البداية">
-                                    </div>
-                                    <div class="form-group col-lg-2">
-                                        <label for="inputName" class="bold mb-2">تاريخ البداية هجري</label>
-                                        <input type="text" class="form-control hijri-date-input" name="documents[1][date_hijri]"
-                                            id="inputName" placeholder="تاريخ البداية هجري">
-                                    </div>
-                                    <div class="form-group col-lg-2">
-                                        <label for="inputName" class="bold mb-2">تاريخ الأنتهاء</label>
-                                        <input type="text" class="form-control date" name="documents[1][date_end]"
-                                            id="inputName" placeholder="تاريخ الأنتهاء">
-                                    </div>
-                                    <div class="form-group col-lg-2">
-                                        <label for="inputName" class="bold mb-2">تاريخ الأنتهاء هجري</label>
-                                        <input type="text" class="form-control hijri-date-input" name="documents[1][date_hijri_end]"
-                                            id="inputName" placeholder="تاريخ الأنتهاء هجري">
+                                            id="inputName" placeholder="تاريخ المستند">
                                     </div>
                                     <!-- End Form Group -->
 
@@ -412,9 +362,9 @@
                                     </div>
 
 
-                                    <!-- Repeater Remove Btn --> 
+                                    <!-- Repeater Remove Btn -->
                                     <div class="repeater-remove-btn col-lg-1">
-                                        <button class="remove-btn" type="button" onclick="delete_row(this)">
+                                        <button data-repeater-delete class="remove-btn">
                                             <img src="{{ asset('assets/img/svg/remove.svg') }}" alt=""
                                                 class="svg">
                                         </button>
@@ -444,59 +394,7 @@
     </script>
     <script src="{{ asset('js/map.js') }}"></script>
     <script>
-        myMap3({
-            coords: {
-                latitude: '{{ $building->map_lat }}',
-                longitude: '{{ $building->map_long }}'
-            }
-        });
-    </script>
-    <script src="{{ asset('hijri-date-picker-bootstrap/dist/js/bootstrap-hijri-datetimepicker.js?v2') }}"></script> 
-    <script>
-        
-        $(function () { 
-            initHijrDatePicker();
-
-        }); 
-
-        function initHijrDatePicker() { 
-
-            $(".hijri-date-input").hijriDatePicker({
-                locale: "ar-sa",
-                format: "DD-MM-YYYY",
-                hijriFormat: "iDD/iMM/iYYYY",
-                dayViewHeaderFormat: "MMMM YYYY",
-                hijriDayViewHeaderFormat: "iMMMM iYYYY",
-                showSwitcher: false,
-                allowInputToggle: true,
-                showTodayButton: false,
-                useCurrent: true,
-                isRTL: false,
-                viewMode: "months",
-                keepOpen: false,
-                hijri: true,
-                debug: false,
-                showClear: true,
-                showTodayButton: true,
-                showClose: true,
-            });
-
-            $('.date').datetimepicker({
-                format: 'DD/MM/YYYY',
-                locale: 'en',
-                icons: {
-                    up: 'fas fa-chevron-up',
-                    down: 'fas fa-chevron-down',
-                    previous: 'fas fa-chevron-left',
-                    next: 'fas fa-chevron-right'
-                }, 
-            })
-            $('.prev span').removeClass();
-            $('.prev span').addClass("fa fa-chevron-left");
-
-            $('.next span').removeClass();
-            $('.next span').addClass("fa fa-chevron-right");
-        } 
+        locate();
     </script>
     <script>
         var sak_count = 2;
@@ -504,22 +402,12 @@
         function add_more_sak() {
             $('#sak-container').append(
                 `<div class="item-content align-items-center row"> 
-                    <div class="form-group col-lg-2">
+                    <div class="form-group col-lg-4">
                         <label for="inputName" class="bold mb-2">رقم الصك</label>
                         <input type="text" name="saks[${sak_count}][num]" class="form-control"
                             id="inputName" placeholder="رقم الصك">
                     </div>  
-                    <div class="form-group col-lg-2">
-                        <label for="inputName" class="bold mb-2">تاريخ الصك</label>
-                        <input type="text" class="form-control date" name="saks[${sak_count}][date]" id="inputName"
-                            placeholder="تاريخ الصك">
-                    </div>  
-                    <div class="form-group col-lg-2">
-                        <label for="inputName" class="bold mb-2">تاريخ الصك هجري</label>
-                        <input type="text" class="form-control date" name="saks[${sak_count}][date_hijri]" id="inputName"
-                            placeholder="تاريخ الصك هجري">
-                    </div>  
-                    <div class="col-lg-4"> 
+                    <div class="col-lg-7"> 
                         <div class="attach-file style--three">
                             <div class="upload-button">
                                 Choose a file
@@ -537,7 +425,6 @@
                 </div>`
             );
             sak_count++;
-            initHijrDatePicker();
         }
 
         var file_count = 2;
@@ -561,24 +448,9 @@
                             placeholder="نوع المستند">
                     </div> 
                     <div class="form-group col-lg-2">
-                        <label for="inputName" class="bold mb-2">تاريخ البداية</label>
+                        <label for="inputName" class="bold mb-2">تاريخ المستند</label>
                         <input type="text" class="form-control date" name="documents[${file_count}][date]" id="inputName"
-                            placeholder="تاريخ البداية">
-                    </div>  
-                    <div class="form-group col-lg-2">
-                        <label for="inputName" class="bold mb-2">تاريخ البداية هجري</label>
-                        <input type="text" class="form-control date" name="documents[${file_count}][date_hijri]" id="inputName"
-                            placeholder="تاريخ البداية هجري">
-                    </div>  
-                    <div class="form-group col-lg-2">
-                        <label for="inputName" class="bold mb-2">تاريخ الأنتهاء</label>
-                        <input type="text" class="form-control date" name="documents[${file_count}][date_end]" id="inputName"
-                            placeholder="تاريخ الأنتهاء">
-                    </div>  
-                    <div class="form-group col-lg-2">
-                        <label for="inputName" class="bold mb-2">تاريخ الأنتهاء هجري</label>
-                        <input type="text" class="form-control date" name="documents[${file_count}][date_hijri_end]" id="inputName"
-                            placeholder="تاريخ الأنتهاء هجري">
+                            placeholder="تاريخ المستند">
                     </div>  
                     <div class="col-lg-3"> 
                         <div class="attach-file style--three">
@@ -590,7 +462,7 @@
                         <label class="file_upload mr-2">No file added</label>
                     </div> 
                     <div class="repeater-remove-btn col-lg-1">
-                        <button data-repeater-delete class="remove-btn" onclick="delete_row(this)">
+                        <button data-repeater-delete class="remove-btn">
                             <img src="${ "{{ asset('assets/img/svg/remove.svg') }}" }" alt=""
                                 class="svg">
                         </button>
@@ -599,13 +471,25 @@
             );
             file_count++;
 
-            initHijrDatePicker();
+            $('.date').datetimepicker({
+                format: 'DD/MM/YYYY',
+                locale: 'en',
+                icons: {
+                    up: 'fas fa-chevron-up',
+                    down: 'fas fa-chevron-down',
+                    previous: 'fas fa-chevron-left',
+                    next: 'fas fa-chevron-right'
+                },
+            })
         }
+
         function delete_row(em) {
             $(em).closest('.row').remove();
         }
     </script>
     <script>
+        window.onload = get_cities();
+
         function get_cities() {
             var country_id = $('#country_id').val();
             $.ajax({

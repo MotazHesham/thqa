@@ -1,66 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;  
 
-Route::redirect('/', '/login');
-Route::get('/home', function () {
-    if (session('status')) {
-        return redirect()->route('admin.home')->with('status', session('status'));
-    }
+Route::group(['prefix' => 'owner', 'as' => 'owner.', 'namespace' => 'Owner', 'middleware' => ['auth','owner']], function () {
 
-    return redirect()->route('admin.home');
-});
-
-Auth::routes(); 
-
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth','staff']], function () {
-    Route::get('/', 'HomeController@index')->name('home');
-    // Permissions
-    Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
-    Route::resource('permissions', 'PermissionsController');
-
-    // Roles
-    Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
-    Route::resource('roles', 'RolesController');
-
-    // Users
-    Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
-    Route::post('users/media', 'UsersController@storeMedia')->name('users.storeMedia');
-    Route::post('users/ckmedia', 'UsersController@storeCKEditorImages')->name('users.storeCKEditorImages');
-    Route::resource('users', 'UsersController');
-
-    // Audit Logs
-    Route::resource('audit-logs', 'AuditLogsController', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
-
-    // User Alerts
-    Route::delete('user-alerts/destroy', 'UserAlertsController@massDestroy')->name('user-alerts.massDestroy');
-    Route::get('user-alerts/read', 'UserAlertsController@read');
-    Route::resource('user-alerts', 'UserAlertsController', ['except' => ['edit', 'update']]);
-
-    // Owners
-    Route::delete('owners/destroy', 'OwnersController@massDestroy')->name('owners.massDestroy');
-    Route::resource('owners', 'OwnersController');
+    Route::get('/', 'HomeController@index')->name('home'); 
 
     // Buildings
     Route::delete('buildings/destroy', 'BuildingsController@massDestroy')->name('buildings.massDestroy');
     Route::post('buildings/media', 'BuildingsController@storeMedia')->name('buildings.storeMedia');
     Route::post('buildings/ckmedia', 'BuildingsController@storeCKEditorImages')->name('buildings.storeCKEditorImages');
     Route::resource('buildings', 'BuildingsController');
-
-    // Countries
-    Route::delete('countries/destroy', 'CountriesController@massDestroy')->name('countries.massDestroy');
-    Route::post('countries/get_cities', 'CountriesController@get_cities')->name('countries.get_cities');
-    Route::resource('countries', 'CountriesController');
-
-    // Cities
-    Route::delete('cities/destroy', 'CitiesController@massDestroy')->name('cities.massDestroy');
-    Route::resource('cities', 'CitiesController');
-
+    
     // Building Documents
     Route::delete('building-documents/destroy', 'BuildingDocumentsController@massDestroy')->name('building-documents.massDestroy');
     Route::post('building-documents/media', 'BuildingDocumentsController@storeMedia')->name('building-documents.storeMedia');
     Route::post('building-documents/ckmedia', 'BuildingDocumentsController@storeCKEditorImages')->name('building-documents.storeCKEditorImages');
-    Route::get('building-documents/update_status/{id}/{status}', 'BuildingDocumentsController@update_status')->name('building-documents.update_status');
     Route::resource('building-documents', 'BuildingDocumentsController');
 
     // Building Saks

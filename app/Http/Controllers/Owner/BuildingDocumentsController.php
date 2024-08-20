@@ -18,21 +18,6 @@ class BuildingDocumentsController extends Controller
 {
     use MediaUploadingTrait;
 
-    public function update_status(Request $request){
-        if(!in_array($request->status,array_keys(BuildingDocument::STATUS_SELECT))){
-            abort(404);
-        }
-
-        $buildingDocument = BuildingDocument::findOrFail($request->id);
-        $buildingDocument->status = $request->status;
-        $buildingDocument->save();
-
-        if($request->status == 'renewed'){
-            return redirect()->route('admin.buildings.edit',$buildingDocument->building_id);
-        }else{
-            return redirect()->back();
-        }
-    }
     public function index()
     {
         abort_if(Gate::denies('building_document_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');

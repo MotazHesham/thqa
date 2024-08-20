@@ -192,7 +192,7 @@
 
             for (var i = 0; i < parseInt('{{ $buildings->count() }}'); i++) {
                 var contentString = '<img style="padding:8px" width="120" height="120" src="' + titles[i].photo +
-                    '"><h5>' + titles[i].owner + '</h5> ' + titles[i].name + titles[i].building_images ;
+                    '"><a href="'+'{{route("admin.buildings.show",":id")}}'.replace(':id',titles[i].id) + '"><h5>' + titles[i].owner + '</h5></a> ' + titles[i].name + titles[i].building_images ;
                 const marker = new google.maps.Marker({
                     position: new google.maps.LatLng(titles[i].lat, titles[i].lng),
                     map: map,

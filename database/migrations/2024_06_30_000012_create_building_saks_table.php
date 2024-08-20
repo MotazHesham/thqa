@@ -11,6 +11,8 @@ class CreateBuildingSaksTable extends Migration
         Schema::create('building_saks', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('sak_num');
+            $table->date('date')->nullable();
+            $table->string('date_hijri')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

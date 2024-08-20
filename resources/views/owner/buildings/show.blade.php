@@ -85,11 +85,11 @@
                                             <!-- Form Group -->
                                             <div class="review-list mb-20">
                                                 <span class="font-14 bold c4 ml-4">الموظف المسؤول</span>
-
-                                                {{-- {{ $building->employee->fullName ?? '' }} --}}
-                                                @foreach ($building->employees as $employee)
-                                                    <span class="badge badge-info">{{ $employee->fullName ?? '' }}</span>
-                                                @endforeach
+                                               
+                                                    {{-- {{ $building->employee->fullName ?? '' }} --}}
+                                                    @foreach ($building->employees as $employee)
+                                                        <span class="badge badge-info">{{ $employee->fullName ?? '' }}</span>
+                                                    @endforeach
                                                 </span>
                                             </div>
                                             <!-- End Form Group -->
@@ -153,45 +153,21 @@
                                 </div>
                                 <div class="table-responsive">
                                     <!-- Invoice List Table -->
-                                    <form action="#" class="search-form flex-grow">
-                                        <div class="theme-input-group style--two">
-                                            <input type="text" name="search_sak" value="{{ request('search_sak') ?? '' }}"  class="theme-input-style" placeholder="بحث">
-    
-                                            <button type="submit"><img src="{{ asset('assets/img/svg/search-icon.svg') }}" alt=""
-                                                    class="svg"></button>
-                                        </div> 
-                                    </form>
                                     <table class="text-nowrap table-contextual dh-table">
                                         <thead>
                                             <tr>
                                                 <th>اسم الصك</th>
-                                                <th>  التاريخ</th>
-                                                <th>   التاريخ الهجري</th>
-                                                <th> </th>
+                                                <th>عرض</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($buildingBuildingSaks as $sak)
+                                            @foreach ($building->buildingBuildingSaks as $sak)
                                                 <tr>
                                                     <td>{{ $sak->sak_num }}</td>
-                                                    <td>{{ $sak->date }}</td>
-                                                    <td>{{ $sak->date_hijri }}</td>
                                                     <td>
                                                         <a href="{{ $sak->photo ? $sak->photo->getUrl() : '' }}"
                                                             class="details-btn">عرض
-                                                        </a>
-                                                        <form action="{{ route('admin.building-saks.destroy', $sak->id) }}"
-                                                            method="POST"
-                                                            onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
-                                                            style="display: inline-block;">
-                                                            <input type="hidden" name="_method" value="DELETE">
-                                                            <input type="hidden" name="_token"
-                                                                value="{{ csrf_token() }}">
-                                                            <button type="submit" style="background: #ffffff00">
-                                                                <img src="{{ asset('assets/img/svg/c-close.svg') }}"
-                                                                    alt="" class="svg">
-                                                            </button>
-                                                        </form>
+                                                            <i class="icofont-arrow-left"></i></a>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -215,14 +191,6 @@
                                     </h4>
                                 </div>
                                 <div class="table-responsive">
-                                    <form action="#" class="search-form flex-grow">
-                                        <div class="theme-input-group style--two">
-                                            <input type="text" name="search_files" value="{{ request('search_files') ?? '' }}"  class="theme-input-style" placeholder="بحث">
-    
-                                            <button type="submit"><img src="{{ asset('assets/img/svg/search-icon.svg') }}" alt=""
-                                                    class="svg"></button>
-                                        </div> 
-                                    </form>
                                     <!-- Invoice List Table -->
                                     <table class="text-nowrap table-contextual dh-table">
                                         <thead>
@@ -230,43 +198,21 @@
                                                 <th>رقم المستند</th>
                                                 <th>اسم المستند</th>
                                                 <th>نوع المستند</th>
-                                                <th>التاريخ </th>
-                                                <th>التاريخ هجري</th> 
-                                                <th>الحالة</th>
+                                                <th>تاريخ المستند</th>
                                                 <th>عرض</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($buildingBuildingDocuments as $document)
+                                            @foreach ($building->buildingBuildingDocuments as $document)
                                                 <tr>
                                                     <td>{{ $document->file_num }}</td>
                                                     <td>{{ $document->file_name }}</td>
                                                     <td>{{ $document->file_type }}</td>
-                                                    <td>{{ $document->file_date }} <br> {{ $document->file_date_end }}</td>
-                                                    <td>{{ $document->file_date_hijri }} <br> {{ $document->file_date_hijri_end }}</td> 
-                                                    <td> 
-                                                        <span class="badge badge-{{ $document->status ? \App\Models\buildingDocument::STATUS_BADGE_SELECT[$document->status] : '' }}">
-                                                            {{ $document->status ? \App\Models\buildingDocument::STATUS_SELECT[$document->status] : '' }}
-                                                        </span>
-
-                                                    </td>
+                                                    <td>{{ $document->file_date }}</td>
                                                     <td>
                                                         <a href="{{ $document->photo ? $document->photo->getUrl() : '' }}"
                                                             class="details-btn">عرض
-                                                        </a>
-                                                        <form
-                                                            action="{{ route('admin.building-documents.destroy', $document->id) }}"
-                                                            method="POST"
-                                                            onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
-                                                            style="display: inline-block;">
-                                                            <input type="hidden" name="_method" value="DELETE">
-                                                            <input type="hidden" name="_token"
-                                                                value="{{ csrf_token() }}">
-                                                            <button type="submit" style="background: #ffffff00">
-                                                                <img src="{{ asset('assets/img/svg/c-close.svg') }}"
-                                                                    alt="" class="svg">
-                                                            </button>
-                                                        </form>
+                                                            <i class="icofont-arrow-left"></i></a>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -331,34 +277,34 @@
 @section('scripts')
     <script src="https://maps.google.com/maps/api/js?key=AIzaSyDjvU8Zqem3c-vJOpHCh4NmzB0xH8FBhQs&libraries=places&v=weekly">
     </script>
-                        <script src="{{ asset('js/map.js') }}"></script>
-                        <script>
-                            myMap3({
-                                coords: {
-                                    latitude: '{{ $building->map_lat }}',
-                                    longitude: '{{ $building->map_long }}'
-                                }
-                            });
-                        </script>
-                        <script src="{{ asset('assets/plugins/elevatezoom/jquery.elevateZoom-3.0.8.min.js') }}"></script>
-                        <script>
-                            //initiate the plugin and pass the id of the div containing gallery images
-                            $("#img_01").elevateZoom({
-                                gallery: "gal1",
-                                cursor: "pointer",
-                                galleryActiveClass: "active",
-                                imageCrossfade: true,
-                                loadingIcon: "http://www.elevateweb.co.uk/spinner.gif",
-                                zoomType: "inner",
-                                cursor: "crosshair"
-                            });
+            <script src="{{ asset('js/map.js') }}"></script>
+            <script>
+                myMap3({
+                    coords: {
+                        latitude: '{{ $building->map_lat }}',
+                        longitude: '{{ $building->map_long }}'
+                    }
+                });
+            </script>
+            <script src="{{ asset('assets/plugins/elevatezoom/jquery.elevateZoom-3.0.8.min.js') }}"></script>
+            <script>
+                //initiate the plugin and pass the id of the div containing gallery images
+                $("#img_01").elevateZoom({
+                    gallery: "gal1",
+                    cursor: "pointer",
+                    galleryActiveClass: "active",
+                    imageCrossfade: true,
+                    loadingIcon: "http://www.elevateweb.co.uk/spinner.gif",
+                    zoomType: "inner",
+                    cursor: "crosshair"
+                });
 
-                            //pass the images to Fancybox
-                            $("#img_01").bind("click", function(e) {
-                                var ez = $("#img_01").data("elevateZoom");
-                                $.fancybox(ez.getGalleryList());
-                                return false;
-                            });
-                        </script>
-                        <!-- ======= End BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS ======= -->
+                //pass the images to Fancybox
+                $("#img_01").bind("click", function(e) {
+                    var ez = $("#img_01").data("elevateZoom");
+                    $.fancybox(ez.getGalleryList());
+                    return false;
+                });
+            </script>
+            <!-- ======= End BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS ======= -->
 @endsection)

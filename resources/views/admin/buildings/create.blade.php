@@ -24,8 +24,6 @@
             <!-- Form -->
             <form action="{{ route('admin.buildings.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" name="map_lat" id="map_lat" value="24.6">
-                <input type="hidden" name="map_long" id="map_long" value="46.6">
                 <div class="card mb-30">
                     @csrf
                     <div class="card-body">
@@ -60,7 +58,19 @@
                             </div>
                             <!-- End Form Group -->
                             <!-- Form Group -->
-                            <div class="col-lg-12 mt-4">
+                            <div class="col-lg-2 mt-4"> 
+                                <div class="form-group">
+                                    <label class="font-14 bold mb-2">خط العرض</label>
+                                    <input type="text" name="map_lat" id="map_lat" value="24.6" required
+                                        class="theme-input-style" placeholder="  " onkeyup="changeLatLong()">
+                                </div>  
+                                <div class="form-group">
+                                    <label class="font-14 bold mb-2">خط الطول</label>
+                                    <input type="text" name="map_long" id="map_long" value="46.6" required
+                                        class="theme-input-style" placeholder="  " onkeyup="changeLatLong()">
+                                </div> 
+                            </div>
+                            <div class="col-lg-10 mt-4">
                                 <input style="width: 300px;background: white;margin: 10px;" id="pac-input"
                                     class="form-control" type="text" placeholder="Search Place" />
                                 <div id="map3" class="mb-4" style="width: 100%; height: 400px"></div>
@@ -261,16 +271,26 @@
                                 <div class="item-content align-items-center row">
 
                                     <!-- Form Group -->
-                                    <div class="form-group col-lg-4">
+                                    <div class="form-group col-lg-2">
                                         <label for="inputName" class="bold mb-2">رقم الصك</label>
                                         <input type="text" name="saks[1][num]" class="form-control" id="inputName"
                                             placeholder="رقم الصك">
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label for="inputName" class="bold mb-2">تاريخ الصك</label>
+                                        <input type="text" class="form-control date" name="saks[1][date]"
+                                            id="inputName" placeholder="تاريخ الصك">
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label for="inputName" class="bold mb-2">تاريخ الصك هجري</label>
+                                        <input type="text" class="form-control hijri-date-input" name="saks[1][date_hijri]"
+                                            id="inputName" placeholder="تاريخ الصك هجري">
                                     </div>
                                     <!-- End Form Group -->
 
 
 
-                                    <div class="col-lg-7">
+                                    <div class="col-lg-4">
                                         <!-- <input type="file"> -->
                                         <div class="attach-file style--three">
                                             <div class="upload-button">
@@ -341,9 +361,24 @@
                                     <!-- End Form Group -->
                                     <!-- Form Group -->
                                     <div class="form-group col-lg-2">
-                                        <label for="inputName" class="bold mb-2">تاريخ المستند</label>
+                                        <label for="inputName" class="bold mb-2">تاريخ البداية</label>
                                         <input type="text" class="form-control date" name="documents[1][date]"
-                                            id="inputName" placeholder="تاريخ المستند">
+                                            id="inputName" placeholder="تاريخ البداية">
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label for="inputName" class="bold mb-2">تاريخ البداية هجري</label>
+                                        <input type="text" class="form-control hijri-date-input" name="documents[1][date_hijri]"
+                                            id="inputName" placeholder="تاريخ البداية هجري">
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label for="inputName" class="bold mb-2">تاريخ الأنتهاء</label>
+                                        <input type="text" class="form-control date" name="documents[1][date_end]"
+                                            id="inputName" placeholder="تاريخ الأنتهاء">
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label for="inputName" class="bold mb-2">تاريخ الأنتهاء هجري</label>
+                                        <input type="text" class="form-control hijri-date-input" name="documents[1][date_hijri_end]"
+                                            id="inputName" placeholder="تاريخ الأنتهاء هجري">
                                     </div>
                                     <!-- End Form Group -->
 
@@ -396,18 +431,75 @@
     <script>
         locate();
     </script>
+    <script src="{{ asset('hijri-date-picker-bootstrap/dist/js/bootstrap-hijri-datetimepicker.js?v2') }}"></script> 
+    <script>
+        
+        $(function () { 
+            initHijrDatePicker();
+
+        }); 
+
+        function initHijrDatePicker() { 
+
+            $(".hijri-date-input").hijriDatePicker({
+                locale: "ar-sa",
+                format: "DD-MM-YYYY",
+                hijriFormat: "iDD/iMM/iYYYY",
+                dayViewHeaderFormat: "MMMM YYYY",
+                hijriDayViewHeaderFormat: "iMMMM iYYYY",
+                showSwitcher: false,
+                allowInputToggle: true,
+                showTodayButton: false,
+                useCurrent: true,
+                isRTL: false,
+                viewMode: "months",
+                keepOpen: false,
+                hijri: true,
+                debug: false,
+                showClear: true,
+                showTodayButton: true,
+                showClose: true,
+            });
+
+            $('.date').datetimepicker({
+                format: 'DD/MM/YYYY',
+                locale: 'en',
+                icons: {
+                    up: 'fas fa-chevron-up',
+                    down: 'fas fa-chevron-down',
+                    previous: 'fas fa-chevron-left',
+                    next: 'fas fa-chevron-right'
+                }, 
+            })
+            $('.prev span').removeClass();
+            $('.prev span').addClass("fa fa-chevron-left");
+
+            $('.next span').removeClass();
+            $('.next span').addClass("fa fa-chevron-right");
+        } 
+    </script>
     <script>
         var sak_count = 2;
 
         function add_more_sak() {
             $('#sak-container').append(
                 `<div class="item-content align-items-center row"> 
-                    <div class="form-group col-lg-4">
+                    <div class="form-group col-lg-2">
                         <label for="inputName" class="bold mb-2">رقم الصك</label>
                         <input type="text" name="saks[${sak_count}][num]" class="form-control"
                             id="inputName" placeholder="رقم الصك">
                     </div>  
-                    <div class="col-lg-7"> 
+                    <div class="form-group col-lg-2">
+                        <label for="inputName" class="bold mb-2">تاريخ الصك</label>
+                        <input type="text" class="form-control date" name="saks[${sak_count}][date]" id="inputName"
+                            placeholder="تاريخ الصك">
+                    </div>  
+                    <div class="form-group col-lg-2">
+                        <label for="inputName" class="bold mb-2">تاريخ الصك هجري</label>
+                        <input type="text" class="form-control hijri-date-input" name="saks[${sak_count}][date_hijri]" id="inputName"
+                            placeholder="تاريخ الصك هجري">
+                    </div>  
+                    <div class="col-lg-4"> 
                         <div class="attach-file style--three">
                             <div class="upload-button">
                                 Choose a file
@@ -425,6 +517,8 @@
                 </div>`
             );
             sak_count++;
+
+            initHijrDatePicker(); 
         }
 
         var file_count = 2;
@@ -448,9 +542,24 @@
                             placeholder="نوع المستند">
                     </div> 
                     <div class="form-group col-lg-2">
-                        <label for="inputName" class="bold mb-2">تاريخ المستند</label>
+                        <label for="inputName" class="bold mb-2">تاريخ البداية</label>
                         <input type="text" class="form-control date" name="documents[${file_count}][date]" id="inputName"
-                            placeholder="تاريخ المستند">
+                            placeholder="تاريخ البداية">
+                    </div>  
+                    <div class="form-group col-lg-2">
+                        <label for="inputName" class="bold mb-2">تاريخ البداية هجري</label>
+                        <input type="text" class="form-control hijri-date-input" name="documents[${file_count}][date_hijri]" id="inputName"
+                            placeholder="تاريخ البداية هجري">
+                    </div>  
+                    <div class="form-group col-lg-2">
+                        <label for="inputName" class="bold mb-2">تاريخ الأنتهاء</label>
+                        <input type="text" class="form-control date" name="documents[${file_count}][date_end]" id="inputName"
+                            placeholder="تاريخ الأنتهاء">
+                    </div>  
+                    <div class="form-group col-lg-2">
+                        <label for="inputName" class="bold mb-2">تاريخ الأنتهاء هجري</label>
+                        <input type="text" class="form-control hijri-date-input" name="documents[${file_count}][date_hijri_end]" id="inputName"
+                            placeholder="تاريخ الأنتهاء هجري">
                     </div>  
                     <div class="col-lg-3"> 
                         <div class="attach-file style--three">
@@ -469,18 +578,9 @@
                     </div> 
                 </div>`
             );
-            file_count++;
-
-            $('.date').datetimepicker({
-                format: 'DD/MM/YYYY',
-                locale: 'en',
-                icons: {
-                    up: 'fas fa-chevron-up',
-                    down: 'fas fa-chevron-down',
-                    previous: 'fas fa-chevron-left',
-                    next: 'fas fa-chevron-right'
-                },
-            })
+            file_count++; 
+            
+            initHijrDatePicker();
         }
 
         function delete_row(em) {

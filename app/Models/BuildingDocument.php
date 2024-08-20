@@ -24,9 +24,23 @@ class BuildingDocument extends Model implements HasMedia
 
     protected $dates = [
         'file_date',
+        'file_date_end',
+        'file_date_hijri',
+        'file_date_hijri_end',
         'created_at',
         'updated_at',
         'deleted_at',
+    ];
+
+    const STATUS_SELECT = [
+        'active' => 'ساري',
+        'renewed' => 'تم التجديد',
+        'closed' => 'تم قفله',
+    ];
+    const STATUS_BADGE_SELECT = [
+        'active' => 'info',
+        'renewed' => 'success',
+        'closed' => 'danger',
     ];
 
     protected $fillable = [
@@ -35,6 +49,9 @@ class BuildingDocument extends Model implements HasMedia
         'file_name',
         'file_type',
         'file_date',
+        'file_date_end',
+        'file_date_hijri',
+        'file_date_hijri_end',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -64,6 +81,36 @@ class BuildingDocument extends Model implements HasMedia
     public function setFileDateAttribute($value)
     {
         $this->attributes['file_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+    }
+
+    public function getFileDateEndAttribute($value)
+    {
+        return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
+    }
+
+    public function setFileDateEndAttribute($value)
+    {
+        $this->attributes['file_date_end'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+    }
+
+    public function getFileDateHijriAttribute($value)
+    {
+        return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
+    }
+
+    public function setFileDateHijriAttribute($value)
+    {
+        $this->attributes['file_date_hijri'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+    }
+
+    public function getFileDateHijriEndAttribute($value)
+    {
+        return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
+    }
+
+    public function setFileDateHijriEndAttribute($value)
+    {
+        $this->attributes['file_date_hijri_end'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
     public function getPhotoAttribute()

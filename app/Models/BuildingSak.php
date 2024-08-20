@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Auditable;
+use Carbon\Carbon;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +31,8 @@ class BuildingSak extends Model implements HasMedia
     protected $fillable = [
         'building_id',
         'sak_num',
+        'date',
+        'date_hijri',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -51,6 +54,26 @@ class BuildingSak extends Model implements HasMedia
         return $this->belongsTo(Building::class, 'building_id');
     }
 
+    public function getDateAttribute($value)
+    {
+        return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
+    }
+
+    public function setDateAttribute($value)
+    {
+        $this->attributes['date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+    }
+
+    public function getDateHijriAttribute($value)
+    {
+        return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
+    }
+
+    public function setDateHijriAttribute($value)
+    {
+        $this->attributes['date_hijri'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+    }
+    
     public function getPhotoAttribute()
     {
         $file = $this->getMedia('photo')->last();

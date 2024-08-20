@@ -64,7 +64,14 @@
                     return;
                 } 
                 
-                addmarker(place.geometry.location.lat(),place.geometry.location.lng());
+                var lat = place.geometry.location.lat();
+                var lng = place.geometry.location.lng();
+                
+                addmarker(lat,lng);
+                
+                $('#map_lat').val(lat);
+                $('#map_long').val(lng);
+
                 
                 if (place.geometry.viewport) {
                     // Only geocodes have viewport.
@@ -82,7 +89,7 @@
         map.addListener("click", (mapsMouseEvent) => { 
             var lat = mapsMouseEvent.latLng.lat();
             var lng = mapsMouseEvent.latLng.lng();
-
+            
             addmarker(lat,lng);
 
             $('#map_lat').val(lat);
@@ -135,3 +142,11 @@
         });
         circles.push(circle);
     } 
+
+    function changeLatLong(){
+        const lat = parseFloat($('#map_lat').val());
+        const lng = parseFloat($('#map_long').val());
+        
+        addmarker(lat,lng);
+        getPlaceInfo(lat, lng);
+    }

@@ -108,6 +108,10 @@ class Building extends Model implements HasMedia
         } 
         return $images;
     }
+
+    public function get_location_link(){
+        return 'https://www.google.com/maps/place/'.$this->map_lat.','.$this->map_long;
+    }
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');

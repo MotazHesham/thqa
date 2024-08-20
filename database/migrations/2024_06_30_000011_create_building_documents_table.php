@@ -14,6 +14,10 @@ class CreateBuildingDocumentsTable extends Migration
             $table->string('file_name')->nullable();
             $table->string('file_type')->nullable();
             $table->date('file_date')->nullable();
+            $table->date('file_date_end')->nullable();
+            $table->date('file_date_hijri')->nullable();
+            $table->date('file_date_hijri_end')->nullable();
+            $table->string('status')->default('acitve');
             $table->timestamps();
             $table->softDeletes();
         });

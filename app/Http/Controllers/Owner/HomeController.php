@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Owner;
 
 use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 use App\Models\Building;
-use App\Models\BuildingDocument;
 
 class HomeController
 {
@@ -185,41 +184,7 @@ class HomeController
             $settings5['fields'] = [];
         }
 
-        $settings6 = [
-            'chart_title'        => 'العقارات',
-            'chart_type'         => 'line',
-            'report_type'        => 'group_by_string',
-            'model'              => 'App\Models\Building',
-            'group_by_field'     => 'building_type',
-            'aggregate_function' => 'count',
-            'filter_field'       => 'created_at',
-            'column_class'       => 'col-md-12',
-            'entries_number'     => '5',
-            'translation_key'    => 'building',
-        ];
-
-        $chart6 = new LaravelChart($settings6);
-
-        $settings7 = [
-            'chart_title'        => 'عقارات مسؤولة للموظفين',
-            'chart_type'         => 'pie',
-            'report_type'        => 'group_by_relationship',
-            'model'              => 'App\Models\Building',
-            'group_by_field'     => 'name',
-            'aggregate_function' => 'count',
-            'filter_field'       => 'created_at',
-            'column_class'       => 'col-md-3',
-            'entries_number'     => '5',
-            'relationship_name'  => 'employee',
-            'translation_key'    => 'building',
-        ];
-
-        $chart7 = new LaravelChart($settings7);
         $buildings_count = Building::count();
-
-        
-        $documents = BuildingDocument::with('building.owner.user')->where('status','active')->orderBy('file_date_end','asc')->get();
-
-        return view('home', compact('settings1', 'settings2', 'settings3', 'settings4', 'settings5','chart6','chart7' ,'documents','buildings_count'));
+        return view('owner.home', compact('settings1', 'settings2', 'settings3', 'settings4', 'settings5'  ,'buildings_count'));
     }
 }

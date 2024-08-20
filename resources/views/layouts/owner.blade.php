@@ -58,13 +58,6 @@
         .mysearch-header-nav .select2-container{
             width: 260px !important;
         }
-        th.prev:before  {
-            content: "<" !important;
-        }
-
-        th.next:before  {
-            content: ">" !important;
-        }
     </style>
     @yield('styles')
 </head>
