@@ -88,7 +88,7 @@
                                     <div class="d-flex justify-content-between">
                                         <div class="title-content mb-5">
                                             <h4 class="mb-2">
-                                            مستندات قاربة للأنتهاء    
+                                                مستندات قاربت علي الانتهاء    
                                             </h4> 
                                         </div>
         
@@ -102,10 +102,10 @@
                                                 <tr>
                                                     <th>id</th>
                                                     <th>اسم المستند</th>
-                                                    <th>الملك</th>
+                                                    <th>المالك</th>
                                                     <th>العقار</th>
                                                     <th>الحالة</th>
-                                                    <th>الايام المتبقية</th>
+                                                    <th>عدد الايام المتبقية</th>
                                                     <th>تاريخ الانتهاء</th>
                                                     <td></td>
                                                 </tr>
