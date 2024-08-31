@@ -375,7 +375,7 @@
                                         <input type="text" class="form-control date" name="documents[1][date_end]"
                                             id="inputName" placeholder="تاريخ الأنتهاء">
                                     </div>
-                                    <div class="form-group col-lg-2">
+                                    <div class="form-group col-lg-4">
                                         <label for="inputName" class="bold mb-2">تاريخ الأنتهاء هجري</label>
                                         <input type="text" class="form-control hijri-date-input" name="documents[1][date_hijri_end]"
                                             id="inputName" placeholder="تاريخ الأنتهاء هجري">
@@ -556,7 +556,7 @@
                         <input type="text" class="form-control date" name="documents[${file_count}][date_end]" id="inputName"
                             placeholder="تاريخ الأنتهاء">
                     </div>  
-                    <div class="form-group col-lg-2">
+                    <div class="form-group col-lg-4">
                         <label for="inputName" class="bold mb-2">تاريخ الأنتهاء هجري</label>
                         <input type="text" class="form-control hijri-date-input" name="documents[${file_count}][date_hijri_end]" id="inputName"
                             placeholder="تاريخ الأنتهاء هجري">

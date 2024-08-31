@@ -121,7 +121,9 @@
                                                             {{ $document->file_name }}
                                                         </td>
                                                         <td>
-                                                            {{ $building->owner ? $building->owner->user->fullName : '' }}
+                                                            @if($building && $building->owner && $building->owner->user)
+                                                                {{ $building->owner ? $building->owner->user->fullName : '' }}
+                                                            @endif
                                                         </td>
                                                         <td>
                                                             <a href="{{route('admin.buildings.show',$document->building_id)}}">{{ $document->building_id }}</a>
