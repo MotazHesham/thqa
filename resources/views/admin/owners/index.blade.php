@@ -104,7 +104,7 @@
                                                             <img src="{{ $owner->user->photo ? $owner->user->photo->getUrl('thumb') : asset('assets/img/avatar/user0.png') }}" class="img-40" alt="">
                                                         </div>
                                                         <div class="name bold">
-                                                            <a href="#"> {{ $owner->user->name  ?? '' }} {{ $owner->user->last_name ?? '' }} </a>
+                                                            <a href="{{ route('admin.owners.show',$owner->id) }}"> {{ $owner->user->name  ?? '' }} {{ $owner->user->last_name ?? '' }} </a>
                                                         </div>
                                                     </div>
                                                 </td>

@@ -84,7 +84,7 @@ class OwnersController extends Controller
     {
         abort_if(Gate::denies('owner_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $owner->load('user');
+        $owner->load('user','ownerBuildings');
 
         $user = $owner->user;
 
