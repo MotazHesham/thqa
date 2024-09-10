@@ -22,7 +22,9 @@ class BuildingFoldersController extends Controller
     }
 
     public function delete_folder($folder_id){
-        BuildingFolder::destroy($folder_id);
+        if(!BuildingSak::where('building_folder_id',$folder_id)->first() && !BuildingDocument::where('building_folder_id',$folder_id)->first()){
+            BuildingFolder::destroy($folder_id);
+        }
         return  redirect()->back();
     }
 
