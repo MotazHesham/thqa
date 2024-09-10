@@ -185,6 +185,10 @@ class Building extends Model implements HasMedia
         return $this->belongsTo(City::class, 'city_id');
 
     }
+
+    public function folders(){
+        return $this->hasMany(BuildingFolder::class);
+    }
     
     public function employees()
     {

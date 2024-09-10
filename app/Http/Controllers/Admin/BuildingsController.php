@@ -9,6 +9,7 @@ use App\Http\Requests\StoreBuildingRequest;
 use App\Http\Requests\UpdateBuildingRequest;
 use App\Models\Building;
 use App\Models\BuildingDocument;
+use App\Models\BuildingFolder;
 use App\Models\BuildingSak;
 use App\Models\City;
 use App\Models\Country;
@@ -22,6 +23,36 @@ use Symfony\Component\HttpFoundation\Response;
 class BuildingsController extends Controller
 {
     use MediaUploadingTrait;
+
+    public function show_folder_files(Request $request){
+        if($request->type == 'sak'){
+            if($request->folder_id){
+                $folder = BuildingFolder::find($request->folder_id);
+                $saks = BuildingSak::where('building_folder_id',$request->folder_id)->get();
+                return view('admin.buildings.partials.saks',compact('saks','folder'));
+            }else{
+                $folder = null;
+                $folders = BuildingFolder::where('type','sak')->where('building_id',$request->building_id)->get();
+                $saks = BuildingSak::get();
+                
+                return view('admin.buildings.partials.saks',compact('saks','folder','folders'));
+            }
+        }elseif($request->type == 'document'){
+            if($request->folder_id){
+                $folder = BuildingFolder::find($request->folder_id);
+                $documents = BuildingDocument::where('building_folder_id',$request->folder_id)->get();
+                return view('admin.buildings.partials.documents',compact('documents','folder'));
+            }else{
+                $folder = null;
+                $folders = BuildingFolder::where('type','document')->where('building_id',$request->building_id)->get();
+                $documents = BuildingDocument::get();
+                
+                return view('admin.buildings.partials.documents',compact('documents','folder','folders'));
+            }
+        }else{
+            abort(403);
+        }
+    }
 
     public function index(Request $request)
     {
@@ -207,7 +238,7 @@ class BuildingsController extends Controller
     {
         abort_if(Gate::denies('building_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $building->load('employee', 'country', 'city');
+        $building->load('employee', 'country', 'city','folders');
 
         $buildingBuildingDocuments = BuildingDocument::where('building_id',$building->id);
         $buildingBuildingSaks = BuildingSak::where('building_id',$building->id);

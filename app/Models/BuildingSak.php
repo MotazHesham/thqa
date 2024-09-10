@@ -29,6 +29,7 @@ class BuildingSak extends Model implements HasMedia
     ];
 
     protected $fillable = [
+        'building_folder_id',
         'building_id',
         'sak_num',
         'date',

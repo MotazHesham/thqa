@@ -45,6 +45,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('buildings/destroy', 'BuildingsController@massDestroy')->name('buildings.massDestroy');
     Route::post('buildings/media', 'BuildingsController@storeMedia')->name('buildings.storeMedia');
     Route::post('buildings/ckmedia', 'BuildingsController@storeCKEditorImages')->name('buildings.storeCKEditorImages');
+    Route::post('buildings/show_folder_files', 'BuildingsController@show_folder_files')->name('buildings.show_folder_files');
     Route::resource('buildings', 'BuildingsController');
 
     // Countries
@@ -68,6 +69,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('building-saks/media', 'BuildingSaksController@storeMedia')->name('building-saks.storeMedia');
     Route::post('building-saks/ckmedia', 'BuildingSaksController@storeCKEditorImages')->name('building-saks.storeCKEditorImages');
     Route::resource('building-saks', 'BuildingSaksController');
+
+    // Building Folders
+    Route::get('building-folders/delete_folder/{folder_id}', 'BuildingFoldersController@delete_folder')->name('building-folders.delete_folder');
+    Route::post('building-folders/update_folder', 'BuildingFoldersController@update_folder')->name('building-folders.update_folder');
+    Route::resource('building-folders', 'BuildingFoldersController');
 
     // Owners Report
     Route::delete('owners-reports/destroy', 'OwnersReportController@massDestroy')->name('owners-reports.massDestroy');

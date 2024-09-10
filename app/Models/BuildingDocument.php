@@ -44,6 +44,7 @@ class BuildingDocument extends Model implements HasMedia
     ];
 
     protected $fillable = [
+        'building_folder_id',
         'building_id',
         'file_num',
         'file_name',

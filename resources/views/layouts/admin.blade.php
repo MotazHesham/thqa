@@ -64,6 +64,12 @@
         th.next:before  {
             content: ">" !important;
         }
+
+        .card-folder:hover{
+            border: 2px solid #000000 !important;
+            border-radius: 15px !important;
+            cursor: pointer;
+        }
     </style>
     @yield('styles')
 </head>
@@ -115,6 +121,12 @@
         <!-- End Footer -->
     </div>
     <!-- End wrapper -->
+
+    <div class="modal fade" id="AjaxModal" tabindex="-1"  aria-labelledby="AjaxModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            {{-- ajax call --}}
+        </div>
+    </div>
 
     <form id="logoutform" action="{{ route('logout') }}" method="POST" style="display: none;">
         {{ csrf_field() }}
