@@ -75,6 +75,7 @@ class Building extends Model implements HasMedia
         'building_residential_commercial'      => 'https://maps.google.com/mapfiles/ms/icons/orange-dot.png',
         'cert_planner'      => 'https://maps.google.com/mapfiles/ms/icons/ltblue-dot.png',
         'raw_land'      => 'https://maps.gstatic.com/mapfiles/ms2/micons/blue-pushpin.png',
+        'building_invest'      => 'https://maps.gstatic.com/mapfiles/ms2/micons/blue-pushpin.png',
     ];
 
     protected $fillable = [

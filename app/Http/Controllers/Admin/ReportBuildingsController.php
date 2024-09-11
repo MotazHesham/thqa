@@ -50,7 +50,7 @@ class ReportBuildingsController extends Controller
         if($request->has('search')){
             $search = true;
             
-            $buildings = Building::with(['owner.user', 'employee', 'country', 'city', 'media']);
+            $buildings = Building::with(['owner.user', 'employees', 'country', 'city', 'media']);
 
             if($request->country_id != null){ 
                 $country_id = $request->country_id; 
@@ -67,7 +67,9 @@ class ReportBuildingsController extends Controller
 
             if($request->employee_id != null){
                 $employee_id = $request->employee_id; 
-                $buildings->where('employee_id',$employee_id);
+                $buildings->whereHas('employees',function($q) use($employee_id){
+                    $q->where('employee_id', $employee_id);
+                });
             }
             if($request->building_status != null){
                 $building_status = $request->building_status; 
