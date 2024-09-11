@@ -25,6 +25,11 @@ class UpdateBuildingRequest extends FormRequest
                 'string',
                 'required',
             ],
+            'code' => [
+                'string',
+                'required',
+                'unique:buildings,code,'.request()->route('building')->id
+            ],
             'map_lat' => [
                 'string',
                 'required',

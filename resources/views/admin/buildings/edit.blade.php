@@ -31,7 +31,7 @@
                         <h4 class="font-20 mb-20"> بيانات العقار </h4>
 
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <!-- Form Group -->
                                 <div class="form-group">
                                     <label for="exampleSelect1" class="mb-2 black bold d-block"> اسم المالك</label>
@@ -49,11 +49,19 @@
                             </div>
                             <!-- End Form Group -->
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <!-- Form Group -->
                                 <div class="form-group">
                                     <label class="font-14 bold mb-2"> اسم العقار</label>
                                     <input type="text" name="name" value="{{ old('name', $building->name) }}" required
+                                        class="theme-input-style" placeholder="  ">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <!-- Form Group -->
+                                <div class="form-group">
+                                    <label class="font-14 bold mb-2"> كود العقار</label>
+                                    <input type="text" name="code" value="{{ old('code', $building->code) }}" required
                                         class="theme-input-style" placeholder="  ">
                                 </div>
                             </div>
