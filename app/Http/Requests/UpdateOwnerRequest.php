@@ -41,7 +41,8 @@ class UpdateOwnerRequest extends FormRequest
             ],
             'identity_num' => [
                 'size:10',
-                'nullable',
+                'required',
+                'unique:owners,identity_num,' . request()->route('owner')->id,
             ],
             'identity_date' => [
                 'date_format:' . config('panel.date_format'),

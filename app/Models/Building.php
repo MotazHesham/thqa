@@ -51,6 +51,19 @@ class Building extends Model implements HasMedia
         'building_residential_commercial'      => 'عمارة - سكني تجاري',
         'cert_planner'      => 'مخطط معتمد',
         'raw_land'      => 'أرض خام',
+        'building_invest'      => 'مبني استثماري',
+    ];
+    public const BUILDING_TYPE_REF_SELECT = [
+        'land_space' => 'LS',
+        'duplex_villa'  => 'DVP',
+        'building_residential'      => 'RP',
+        'arch_commercial'      => 'CP',
+        'villa'      => 'VP',
+        'break'      => 'BP',
+        'building_residential_commercial'      => 'RCP',
+        'cert_planner'      => 'LL',
+        'raw_land'      => 'RL',
+        'building_invest'      => 'IP',
     ];
     public const BUILDING_TYPE_ICONS = [
         'land_space' => 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
@@ -66,6 +79,7 @@ class Building extends Model implements HasMedia
 
     protected $fillable = [
         'owner_id',
+        'code',
         'name',
         'map_lat',
         'map_long',
@@ -168,12 +182,7 @@ class Building extends Model implements HasMedia
         });
 
         return $files;
-    }
-
-    public function employee()
-    {
-        return $this->belongsTo(User::class, 'employee_id');
-    }
+    } 
 
     public function country()
     {

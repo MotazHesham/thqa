@@ -41,7 +41,8 @@ class StoreOwnerRequest extends FormRequest
             ],
             'identity_num' => [ 
                 'size:10',
-                'nullable',
+                'required',
+                'unique:owners,identity_num',
             ],
             'identity_date' => [
                 'date_format:' . config('panel.date_format'),

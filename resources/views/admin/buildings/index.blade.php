@@ -79,7 +79,7 @@
                                             <!-- End Custom Checkbox -->
 
                                         </th>
-                                        <th>#</th>
+                                        <th>الكود</th>
                                         <th>اسم العقار </th>
                                         <th>النوع</th>
                                         <th>الموقع</th>
@@ -102,7 +102,7 @@
                                                 <!-- End Custom Checkbox -->
 
                                             </td>
-                                            <td>{{ $building->id }}</td>
+                                            <td>{{ $building->code }}</td>
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <div class="img ml-20">

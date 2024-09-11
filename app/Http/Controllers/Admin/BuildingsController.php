@@ -58,7 +58,7 @@ class BuildingsController extends Controller
     {
         abort_if(Gate::denies('building_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $buildings = Building::with(['owner.user', 'employee', 'country', 'city', 'media']);
+        $buildings = Building::with(['owner.user', 'employees', 'country', 'city', 'media']);
 
         if($request->has('search')){
             global $search;
@@ -66,13 +66,13 @@ class BuildingsController extends Controller
             $buildings->whereHas('owner.user',function($q){
                 $q->where('name', 'like', '%'.$GLOBALS['search'].'%')
                 ->orWhere('last_name', 'like', '%'.$GLOBALS['search'].'%');
-            })->orWhereHas('employee',function($q){
+            })->orWhereHas('employees',function($q){
                 $q->where('name', 'like', '%'.$GLOBALS['search'].'%')
                 ->orWhere('last_name', 'like', '%'.$GLOBALS['search'].'%');
             })
             ->orWhereRelation('country','name','like', '%'.$GLOBALS['search'].'%')
             ->orWhereRelation('city','name','like', '%'.$GLOBALS['search'].'%')
-            ->orWhere('id', 'like', '%'.$GLOBALS['search'].'%')
+            ->orWhere('code', 'like', '%'.$GLOBALS['search'].'%')
             ->orWhere('name', 'like', '%'.$GLOBALS['search'].'%')
             ->orWhere('address', 'like', '%'.$GLOBALS['search'].'%');
         }
@@ -98,7 +98,11 @@ class BuildingsController extends Controller
 
     public function store(StoreBuildingRequest $request)
     {   
-        $building = Building::create($request->all());
+        $owner = Owner::findOrFail($request->owner_id);
+        $buildingCount = count($owner->ownerBuildings);
+        $validatedRequest = $request->all();
+        $validatedRequest['code'] = 'Th-' . $request->owner_id . '-' . Building::BUILDING_TYPE_REF_SELECT[$request->building_type] . '-' . ($buildingCount + 1);
+        $building = Building::create($validatedRequest);
         
         foreach ($request->input('photos', []) as $file) {
             $building->addMedia(storage_path('tmp/uploads/' . basename($file)))->toMediaCollection('photos');
@@ -163,7 +167,7 @@ class BuildingsController extends Controller
 
         $cities = City::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $building->load('owner', 'employee', 'country', 'city');
+        $building->load('owner', 'employees', 'country', 'city');
 
         return view('admin.buildings.edit', compact('building', 'cities', 'countries', 'employees', 'owners'));
     }
@@ -238,7 +242,7 @@ class BuildingsController extends Controller
     {
         abort_if(Gate::denies('building_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $building->load('employee', 'country', 'city','folders');
+        $building->load('employees', 'country', 'city','folders');
 
         $buildingBuildingDocuments = BuildingDocument::where('building_id',$building->id);
         $buildingBuildingSaks = BuildingSak::where('building_id',$building->id);

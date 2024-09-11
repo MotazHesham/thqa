@@ -60,6 +60,12 @@
                                         <div class="col-lg-6">
                                             <!-- Form Group -->
                                             <div class="review-list mb-20">
+                                                <span class="font-14 bold c4 ml-4">كود</span>
+                                                <span class="black">
+                                                    {{ $building->code?? '' }}
+                                                </span>
+                                            </div>
+                                            <div class="review-list mb-20">
                                                 <span class="font-14 bold c4 ml-4">المالك</span>
                                                 <span class="black">
                                                     {{ $owner->user->fullName ?? '' }}

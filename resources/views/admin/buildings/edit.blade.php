@@ -41,7 +41,7 @@
                                             @foreach ($owners as $owner)
                                                 <option value="{{ $owner->id }}"
                                                     {{ (old('owner_id') ? old('owner_id', $building->owner_id) : $building->owner->id ?? '') == $owner->id ? 'selected' : '' }}>
-                                                    {{ $owner->user->fullName ?? '' }}</option>
+                                                    (TH - {{ $owner->id }}) {{ $owner->user->fullName ?? '' }}</option>
                                             @endforeach
                                         </select>
                                     </div>

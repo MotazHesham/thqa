@@ -96,6 +96,7 @@
                 <table class="contact-list-table text-nowrap bg-white">
                     <thead>
                         <tr> 
+                            <th>كود</th>
                             <th>اسم العقار </th>
                             <th>عنوان العقار </th>
                             <th>النوع</th>
@@ -110,6 +111,7 @@
                     <tbody>
                         @foreach($owner->ownerBuildings as $building)
                         <tr> 
+                            <td>{{ $building->code }}</td>
                             <td>
                                 <div class="d-flex align-items-center">
                                     <div class="img ml-20">

@@ -10,6 +10,7 @@ class CreateBuildingsTable extends Migration
     {
         Schema::create('buildings', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('code');
             $table->string('name');
             $table->string('map_lat');
             $table->string('map_long');
