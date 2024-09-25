@@ -71,16 +71,7 @@
                     <!-- End Card -->
                 </div>
 
-
-                <div class="col-md-4"> 
-                    <div class="card mb-30 shadow">
-                        <div class="card-body">
-                            <h3>{!! $chart7->options['chart_title'] !!}</h3>
-                            {!! $chart7->renderHtml() !!}
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-8"> 
+                <div class="col-md-12"> 
                     <div class="card mb-30 shadow" style="overflow: scroll;height: 540px;">
                         <div class="card-body">
                             <div class="card mb-30 shadow">
@@ -339,5 +330,5 @@
 @endsection 
 @section('scripts')
 @parent
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>{!! $chart6->renderJs() !!}{!! $chart7->renderJs() !!}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>{!! $chart6->renderJs() !!} 
 @endsection

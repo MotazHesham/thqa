@@ -198,28 +198,12 @@ class HomeController
             'translation_key'    => 'building',
         ];
 
-        $chart6 = new LaravelChart($settings6);
-
-        $settings7 = [
-            'chart_title'        => 'عقارات مسؤولة للموظفين',
-            'chart_type'         => 'pie',
-            'report_type'        => 'group_by_relationship',
-            'model'              => 'App\Models\Building',
-            'group_by_field'     => 'name',
-            'aggregate_function' => 'count',
-            'filter_field'       => 'created_at',
-            'column_class'       => 'col-md-3',
-            'entries_number'     => '5',
-            'relationship_name'  => 'employee',
-            'translation_key'    => 'building',
-        ];
-
-        $chart7 = new LaravelChart($settings7);
+        $chart6 = new LaravelChart($settings6); 
         $buildings_count = Building::count();
 
         
         $documents = BuildingDocument::with('building.owner.user')->where('status','active')->orderBy('file_date_end','asc')->get();
 
-        return view('home', compact('settings1', 'settings2', 'settings3', 'settings4', 'settings5','chart6','chart7' ,'documents','buildings_count'));
+        return view('home', compact('settings1', 'settings2', 'settings3', 'settings4', 'settings5','chart6' ,'documents','buildings_count'));
     }
 }
