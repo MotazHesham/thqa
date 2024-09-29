@@ -181,7 +181,7 @@
 
                                     <div class="row mt-5">
                                         <div class="col-md-2">
-                                            <div class="card text-center card-folder" onclick="show_folder_files(0,'{{ $building->id }}','sak')">
+                                            <div class="card text-center card-folder" onclick="show_folder_files(null,'{{ $building->id }}','sak')">
                                                 <i class="icofont-ui-folder" style="font-size: 50px;color:black"></i>
                                                 All
                                             </div>
@@ -237,7 +237,7 @@
                                     </div>
                                     <div class="row mt-5">
                                         <div class="col-md-2">
-                                            <div class="card text-center card-folder" onclick="show_folder_files(0,'{{ $building->id }}','document')">
+                                            <div class="card text-center card-folder" onclick="show_folder_files(null,'{{ $building->id }}','document')">
                                                 <i class="icofont-ui-folder" style="font-size: 50px;color:black"></i>
                                                 All
                                             </div>
