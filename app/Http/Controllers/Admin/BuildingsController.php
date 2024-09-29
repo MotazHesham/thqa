@@ -30,10 +30,10 @@ class BuildingsController extends Controller
                 $folder = BuildingFolder::find($request->folder_id);
                 $saks = BuildingSak::where('building_folder_id',$request->folder_id)->get();
                 return view('admin.buildings.partials.saks',compact('saks','folder'));
-            }else{
+            }else{ 
                 $folder = null;
                 $folders = BuildingFolder::where('type','sak')->where('building_id',$request->building_id)->get();
-                $saks = BuildingSak::get();
+                $saks = BuildingSak::where('building_id',$request->building_id)->get();
                 
                 return view('admin.buildings.partials.saks',compact('saks','folder','folders'));
             }
@@ -45,7 +45,7 @@ class BuildingsController extends Controller
             }else{
                 $folder = null;
                 $folders = BuildingFolder::where('type','document')->where('building_id',$request->building_id)->get();
-                $documents = BuildingDocument::get();
+                $documents = BuildingDocument::where('building_id',$request->building_id)->get();
                 
                 return view('admin.buildings.partials.documents',compact('documents','folder','folders'));
             }
