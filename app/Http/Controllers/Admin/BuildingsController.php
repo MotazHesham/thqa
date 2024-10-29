@@ -114,11 +114,17 @@ class BuildingsController extends Controller
 
         foreach($request->saks as $sak){
             if($sak['num']){
+                $building_folder = BuildingFolder::firstOrCreate([
+                    'building_id' => $building->id,
+                    'name' => $sak['folder_name'], 
+                    'type' => 'sak', 
+                ]);
                 $buildingSak = BuildingSak::create([
                     'building_id' => $building->id,
                     'sak_num' => $sak['num'],
                     'date' => $sak['date'],
                     'date_hijri' => $sak['date_hijri'],
+                    'building_folder_id' => $building_folder->id ?? null,
                 ]);
                 if (array_key_exists("photo",$sak) && $sak['photo'] != null) {
                     $buildingSak->addMedia($sak['photo'])->toMediaCollection('photo');
@@ -137,6 +143,11 @@ class BuildingsController extends Controller
 
         foreach($request->documents as $document){
             if($document['num'] || $document['name'] || $document['type'] || $document['date'] || $document['date_end'] || $document['date_hijri'] || $document['date_hijri_end']){
+                $building_folder = BuildingFolder::firstOrCreate([
+                    'building_id' => $building->id,
+                    'name' => $document['folder_name'], 
+                    'type' => 'document', 
+                ]);
                 $buildingDocument = BuildingDocument::create([
                     'building_id' => $building->id,
                     'file_num' => $document['num'],
@@ -146,6 +157,7 @@ class BuildingsController extends Controller
                     'file_date_end' => $document['date_end'],
                     'file_date_hijri' => $document['date_hijri'],
                     'file_date_hijri_end' => $document['date_hijri_end'], 
+                    'building_folder_id' => $building_folder->id ?? null,
                 ]);
                 if (array_key_exists("photo",$document) && $document['photo'] != null) {
                     $buildingDocument->addMedia($document['photo'])->toMediaCollection('photo');

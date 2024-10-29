@@ -61,9 +61,7 @@
                                     <p class="font-14 mb-2">
                                         {{ $settings3['chart_title'] }}
                                     </p>
-                                    <!--<h2>{{ number_format($settings3['total_number']) }}</h2>-->
-                                    
-                                    <h2>{{ $buildings_count }}</h2>
+                                    <h2>{{ number_format($settings3['total_number']) }} </h2>
                                 </div>
                             </div>
                         </div>

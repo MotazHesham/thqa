@@ -286,11 +286,16 @@
                                         <input type="text" class="form-control hijri-date-input" name="saks[1][date_hijri]"
                                             id="inputName" placeholder="تاريخ الصك هجري">
                                     </div>
+                                    <div class="form-group col-lg-2">
+                                        <label for="inputName" class="bold mb-2">اسم المجلد</label>
+                                        <input type="text" class="form-control" name="saks[1][folder_name]"
+                                            id="inputName" placeholder="اسم المجلد">
+                                    </div>
                                     <!-- End Form Group -->
 
 
 
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-2">
                                         <!-- <input type="file"> -->
                                         <div class="attach-file style--three">
                                             <div class="upload-button">
@@ -380,6 +385,11 @@
                                         <input type="text" class="form-control hijri-date-input" name="documents[1][date_hijri_end]"
                                             id="inputName" placeholder="تاريخ الأنتهاء هجري">
                                     </div>
+                                    <div class="form-group col-lg-2">
+                                        <label for="inputName" class="bold mb-2">اسم المجلد</label>
+                                        <input type="text" class="form-control" name="documents[1][folder_name]"
+                                            id="inputName" placeholder="اسم المجلد">
+                                    </div>
                                     <!-- End Form Group -->
 
 
@@ -399,7 +409,7 @@
 
                                     <!-- Repeater Remove Btn -->
                                     <div class="repeater-remove-btn col-lg-1">
-                                        <button data-repeater-delete class="remove-btn">
+                                        <button data-repeater-delete class="remove-btn"  type="button">
                                             <img src="{{ asset('assets/img/svg/remove.svg') }}" alt=""
                                                 class="svg">
                                         </button>
@@ -437,6 +447,10 @@
         $(function () { 
             initHijrDatePicker();
 
+            $(document).on('change','.file-input', function() {
+                var filename = $(this).val().split('\\').pop();
+                $(this).parents('.attach-file').siblings('.file_upload, .file_upload2, .file_upload3').text(filename);
+            })
         }); 
 
         function initHijrDatePicker() { 
@@ -499,7 +513,12 @@
                         <input type="text" class="form-control hijri-date-input" name="saks[${sak_count}][date_hijri]" id="inputName"
                             placeholder="تاريخ الصك هجري">
                     </div>  
-                    <div class="col-lg-4"> 
+                    <div class="form-group col-lg-2">
+                        <label for="inputName" class="bold mb-2">اسم المجلد</label>
+                        <input type="text" class="form-control" name="saks[${sak_count}][folder_name]"
+                            id="inputName" placeholder="اسم المجلد">
+                    </div>
+                    <div class="col-lg-2"> 
                         <div class="attach-file style--three">
                             <div class="upload-button">
                                 Choose a file
@@ -561,6 +580,11 @@
                         <input type="text" class="form-control hijri-date-input" name="documents[${file_count}][date_hijri_end]" id="inputName"
                             placeholder="تاريخ الأنتهاء هجري">
                     </div>  
+                    <div class="form-group col-lg-2">
+                        <label for="inputName" class="bold mb-2">اسم المجلد</label>
+                        <input type="text" class="form-control" name="documents[${file_count}][folder_name]"
+                            id="inputName" placeholder="اسم المجلد">
+                    </div>
                     <div class="col-lg-3"> 
                         <div class="attach-file style--three">
                             <div class="upload-button">
@@ -571,7 +595,7 @@
                         <label class="file_upload mr-2">No file added</label>
                     </div> 
                     <div class="repeater-remove-btn col-lg-1">
-                        <button data-repeater-delete class="remove-btn">
+                        <button data-repeater-delete  type="button" class="remove-btn">
                             <img src="${ "{{ asset('assets/img/svg/remove.svg') }}" }" alt=""
                                 class="svg">
                         </button>
