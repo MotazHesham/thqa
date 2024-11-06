@@ -79,9 +79,11 @@
                                 </td>
                             @endif
                             <td>
-                                <a href="{{ $document->photo ? $document->photo->getUrl() : '' }}"
-                                    class="details-btn">عرض
-                                </a>
+                                @if($document->photo)
+                                    <a href="{{ $document->photo->getUrl() }}"
+                                        class="details-btn">عرض
+                                    </a>
+                                @endif
                                 <form
                                     action="{{ route('admin.building-documents.destroy', $document->id) }}"
                                     method="POST"

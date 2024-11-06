@@ -20,14 +20,24 @@ class StoreBuildingSakRequest extends FormRequest
             'building_id' => [
                 'required',
                 'integer',
-            ],
+            ], 
             'sak_num' => [
-                'string',
-                'required',
+                'required', 
+            ], 
+            'date' => [
+                'nullable',
+                'date_format:' . config('panel.date_format'),
+            ],
+
+            'date_hijri' => [
+                'nullable',
+                'date_format:' . config('panel.date_format'),
             ],
             'photo' => [
-                'required',
-            ],
+                'nullable',
+                'file',
+                'max:8000'
+            ]
         ];
     }
 }

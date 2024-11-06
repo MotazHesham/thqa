@@ -66,31 +66,6 @@ class StoreBuildingRequest extends FormRequest
             'photos' => [
                 'array',
             ],
-            'documents.*.date' => [
-                'nullable',
-                'date_format:' . config('panel.date_format'),
-            ],
-            'documents.*.date_end' => [
-                'nullable',
-                'date_format:' . config('panel.date_format'),
-            ],
-            'documents.*.date_hijri' => [
-                'nullable',
-                'date_format:' . config('panel.date_format'),
-            ],
-            'documents.*.date_hijri_end' => [
-                'nullable',
-                'date_format:' . config('panel.date_format'),
-            ],
-            'saks.*.date' => [
-                'nullable',
-                'date_format:' . config('panel.date_format'),
-            ],
-
-            'saks.*.date_hijri' => [
-                'nullable',
-                'date_format:' . config('panel.date_format'),
-            ],
         ];
     }
 }

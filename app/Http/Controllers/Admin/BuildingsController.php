@@ -112,26 +112,6 @@ class BuildingsController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $building->id]);
         }
 
-        foreach($request->saks as $sak){
-            if($sak['num']){
-                $building_folder = BuildingFolder::firstOrCreate([
-                    'building_id' => $building->id,
-                    'name' => $sak['folder_name'], 
-                    'type' => 'sak', 
-                ]);
-                $buildingSak = BuildingSak::create([
-                    'building_id' => $building->id,
-                    'sak_num' => $sak['num'],
-                    'date' => $sak['date'],
-                    'date_hijri' => $sak['date_hijri'],
-                    'building_folder_id' => $building_folder->id ?? null,
-                ]);
-                if (array_key_exists("photo",$sak) && $sak['photo'] != null) {
-                    $buildingSak->addMedia($sak['photo'])->toMediaCollection('photo');
-                }
-            }
-        } 
-
         if ($request->has('employees')) {
             if (in_array('all', $request->employees)) {
                 $employees = User::where('user_type','staff')->pluck('id');
@@ -141,30 +121,12 @@ class BuildingsController extends Controller
             $building->employees()->sync($employees);
         }
 
-        foreach($request->documents as $document){
-            if($document['num'] || $document['name'] || $document['type'] || $document['date'] || $document['date_end'] || $document['date_hijri'] || $document['date_hijri_end']){
-                $building_folder = BuildingFolder::firstOrCreate([
-                    'building_id' => $building->id,
-                    'name' => $document['folder_name'], 
-                    'type' => 'document', 
-                ]);
-                $buildingDocument = BuildingDocument::create([
-                    'building_id' => $building->id,
-                    'file_num' => $document['num'],
-                    'file_name' => $document['name'],
-                    'file_type' => $document['type'],
-                    'file_date' => $document['date'],
-                    'file_date_end' => $document['date_end'],
-                    'file_date_hijri' => $document['date_hijri'],
-                    'file_date_hijri_end' => $document['date_hijri_end'], 
-                    'building_folder_id' => $building_folder->id ?? null,
-                ]);
-                if (array_key_exists("photo",$document) && $document['photo'] != null) {
-                    $buildingDocument->addMedia($document['photo'])->toMediaCollection('photo');
-                }
-            }
+        if($request->has('save_upload')){
+            $redirect_link = route('admin.buildings.show',$building->id);
+            return redirect()->to($redirect_link . '?sak_more=1');
         }
-        return redirect()->route('admin.buildings.index');
+
+        return redirect()->route('admin.buildings.index'); 
     }
 
     public function edit(Building $building)
@@ -212,48 +174,16 @@ class BuildingsController extends Controller
             $building->employees()->sync($employees);
         } else {
             $building->employees()->sync([]);
-        }
-
-
-
-        foreach($request->saks as $sak){
-            if($sak['num']){
-                $buildingSak = BuildingSak::create([
-                    'building_id' => $building->id,
-                    'sak_num' => $sak['num'],
-                    'date' => $sak['date'],
-                    'date_hijri' => $sak['date_hijri'],
-                ]);
-                if (array_key_exists("photo",$sak) && $sak['photo'] != null) {
-                    $buildingSak->addMedia($sak['photo'])->toMediaCollection('photo');
-                }
-            }
         } 
-        foreach($request->documents as $document){
-            if($document['num'] || $document['name'] || $document['type'] || $document['date'] || $document['date_end'] || $document['date_hijri'] || $document['date_hijri_end']){
-                $buildingDocument = BuildingDocument::create([
-                    'building_id' => $building->id,
-                    'file_num' => $document['num'],
-                    'file_name' => $document['name'],
-                    'file_type' => $document['type'],
-                    'file_date' => $document['date'],
-                    'file_date_end' => $document['date_end'],
-                    'file_date_hijri' => $document['date_hijri'],
-                    'file_date_hijri_end' => $document['date_hijri_end'], 
-                ]);
-                if (array_key_exists("photo",$document) && $document['photo'] != null) {
-                    $buildingDocument->addMedia($document['photo'])->toMediaCollection('photo');
-                }
-            }
-        }
 
         return redirect()->route('admin.buildings.index');
     }
 
     public function show(Building $building)
     {
+        // return request()->header('more_sak') ?? 'NAN';
         abort_if(Gate::denies('building_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+        
         $building->load('employees', 'country', 'city','folders');
 
         $buildingBuildingDocuments = BuildingDocument::where('building_id',$building->id);
@@ -274,7 +204,10 @@ class BuildingsController extends Controller
         $owner = Owner::find($building->owner_id);
         $owner->load('ownerBuildings','user');
 
-        return view('admin.buildings.show', compact('building','owner','buildingBuildingDocuments','buildingBuildingSaks'));
+        $folders = BuildingFolder::where('type','sak')->where('building_id',$building->id)->get();
+        $folders2 = BuildingFolder::where('type','document')->where('building_id',$building->id)->get();
+
+        return view('admin.buildings.show', compact('building','owner','buildingBuildingDocuments','buildingBuildingSaks','folders','folders2'));
     }
 
     public function destroy(Building $building)

@@ -8,6 +8,7 @@ use App\Http\Requests\MassDestroyBuildingSakRequest;
 use App\Http\Requests\StoreBuildingSakRequest;
 use App\Http\Requests\UpdateBuildingSakRequest;
 use App\Models\Building;
+use App\Models\BuildingFolder;
 use App\Models\BuildingSak;
 use Gate;
 use Illuminate\Http\Request;
@@ -38,17 +39,26 @@ class BuildingSaksController extends Controller
 
     public function store(StoreBuildingSakRequest $request)
     {
-        $buildingSak = BuildingSak::create($request->all());
-
-        if ($request->input('photo', false)) {
-            $buildingSak->addMedia(storage_path('tmp/uploads/' . basename($request->input('photo'))))->toMediaCollection('photo');
+        $validatedRequest = $request->all();
+        if($request->has('folder_id')){
+            $validatedRequest['building_folder_id'] = $request->folder_id;
+        }else{ 
+            $building_folder = BuildingFolder::firstOrCreate([
+                'building_id' => $request->building_id,
+                'name' => $request->folder_name, 
+                'type' => 'sak', 
+            ]);
+            $validatedRequest['building_folder_id'] = $building_folder->id;
         }
-
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $buildingSak->id]);
+        $buildingSak = BuildingSak::create($validatedRequest); 
+        if($request->photo != null){
+            $buildingSak->addMedia($request->photo)->toMediaCollection('photo');
         }
-
-        return redirect()->route('admin.building-saks.index');
+        
+        if($request->has("save_more")){
+            return redirect()->to(route('admin.buildings.show',$buildingSak->building_id) . '?sak_more=1');
+        }
+        return redirect()->route('admin.buildings.show',$buildingSak->building_id);
     }
 
     public function edit(BuildingSak $buildingSak)

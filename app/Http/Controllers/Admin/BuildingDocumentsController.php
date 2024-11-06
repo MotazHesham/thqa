@@ -9,6 +9,7 @@ use App\Http\Requests\StoreBuildingDocumentRequest;
 use App\Http\Requests\UpdateBuildingDocumentRequest;
 use App\Models\Building;
 use App\Models\BuildingDocument;
+use App\Models\BuildingFolder;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -53,17 +54,26 @@ class BuildingDocumentsController extends Controller
 
     public function store(StoreBuildingDocumentRequest $request)
     {
-        $buildingDocument = BuildingDocument::create($request->all());
-
-        if ($request->input('photo', false)) {
-            $buildingDocument->addMedia(storage_path('tmp/uploads/' . basename($request->input('photo'))))->toMediaCollection('photo');
+        $validatedRequest = $request->all();
+        if($request->has('folder_id')){
+            $validatedRequest['building_folder_id'] = $request->folder_id;
+        }else{ 
+            $building_folder = BuildingFolder::firstOrCreate([
+                'building_id' => $request->building_id,
+                'name' => $request->folder_name, 
+                'type' => 'document', 
+            ]);
+            $validatedRequest['building_folder_id'] = $building_folder->id;
+        } 
+        $buildingDocument = BuildingDocument::create($validatedRequest);
+        if($request->photo != null){
+            $buildingDocument->addMedia($request->photo)->toMediaCollection('photo');
         }
-
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $buildingDocument->id]);
+        
+        if($request->has("save_more")){
+            return redirect()->to(route('admin.buildings.show',$buildingDocument->building_id) . '?document_more=1');
         }
-
-        return redirect()->route('admin.building-documents.index');
+        return redirect()->route('admin.buildings.show',$buildingDocument->building_id);
     }
 
     public function edit(BuildingDocument $buildingDocument)

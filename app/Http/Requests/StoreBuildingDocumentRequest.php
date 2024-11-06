@@ -32,7 +32,24 @@ class StoreBuildingDocumentRequest extends FormRequest
             'file_date' => [
                 'date_format:' . config('panel.date_format'),
                 'nullable',
+            ], 
+            'file_date_end' => [
+                'nullable',
+                'date_format:' . config('panel.date_format'),
             ],
+            'file_date_hijri' => [
+                'nullable',
+                'date_format:' . config('panel.date_format'),
+            ],
+            'file_date_hijri_end' => [
+                'nullable',
+                'date_format:' . config('panel.date_format'),
+            ],
+            'photo' => [
+                'nullable',
+                'file',
+                'max:8000'
+            ]
         ];
     }
 }

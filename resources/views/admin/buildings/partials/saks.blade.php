@@ -65,9 +65,11 @@
                                 </td>
                             @endif
                             <td>
-                                <a href="{{ $sak->photo ? $sak->photo->getUrl() : '' }}"
-                                    class="details-btn">عرض
-                                </a>
+                                @if($sak->photo)
+                                    <a href="{{ $sak->photo->getUrl() }}"
+                                        class="details-btn">عرض
+                                    </a>
+                                @endif
                                 <form action="{{ route('admin.building-saks.destroy', $sak->id) }}"
                                     method="POST"
                                     onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
