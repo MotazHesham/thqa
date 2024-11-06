@@ -181,7 +181,7 @@ class BuildingsController extends Controller
 
     public function show(Building $building)
     {
-        // return request()->header('more_sak') ?? 'NAN';
+        
         abort_if(Gate::denies('building_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         
         $building->load('employees', 'country', 'city','folders');

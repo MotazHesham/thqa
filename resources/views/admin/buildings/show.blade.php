@@ -185,7 +185,7 @@
                                                     <div class="form-group">
                                                         <label for="folder_name">اسم المجلد</label>
                                                         <input type="text" class="form-control" name="name"
-                                                            id="">
+                                                            id="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -247,7 +247,7 @@
                                                     <div class="form-group">
                                                         <label for="folder_name">اسم المجلد</label>
                                                         <input type="text" class="form-control" name="name"
-                                                            id="">
+                                                            id="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
