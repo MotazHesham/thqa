@@ -68,7 +68,10 @@
                                 @if($sak->photo)
                                     <a href="{{ $sak->photo->getUrl() }}"
                                         class="details-btn">عرض
-                                    </a>
+                                    </a> 
+                                @endif
+                                @if($sak->dropbox_id)
+                                    <a target="_blanc" href="{{ route('admin.dropbox.getDropBoxFileLink',$sak->dropbox_id) }}"class="details-btn">عرض</a>
                                 @endif
                                 <form action="{{ route('admin.building-saks.destroy', $sak->id) }}"
                                     method="POST"

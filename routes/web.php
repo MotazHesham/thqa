@@ -14,6 +14,10 @@ Route::get('/home', function () {
 Auth::routes(); 
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth','staff']], function () {
+
+    Route::get('dropbox/getDropBoxFileLink/{id}', 'HomeController@getDropBoxFileLink')->name('dropbox.getDropBoxFileLink');
+    Route::post('dropbox/index', 'HomeController@dropbox')->name('dropbox.index');
+
     Route::get('/', 'HomeController@index')->name('home');
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');

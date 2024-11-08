@@ -27,6 +27,7 @@ class BuildingDocument extends Model implements HasMedia
         'file_date_end',
         'file_date_hijri',
         'file_date_hijri_end',
+        'dropbox_id',
         'created_at',
         'updated_at',
         'deleted_at',

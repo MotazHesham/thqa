@@ -13,6 +13,7 @@ class CreateBuildingSaksTable extends Migration
             $table->string('sak_num');
             $table->date('date')->nullable();
             $table->string('date_hijri')->nullable();
+            $table->string('dropbox_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

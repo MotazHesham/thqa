@@ -5,9 +5,101 @@ namespace App\Http\Controllers\Admin;
 use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 use App\Models\Building;
 use App\Models\BuildingDocument;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Redirect;
 
 class HomeController
 {
+    public function dropbox(){
+
+        $accessToken = config('app.dropbox_access_token'); 
+        $path = request()->has('path') && request()->path != null ? request()->path : ''; 
+        $prev = request()->has('prev') && request()->prev != null ? request()->prev : '';
+        $modal_id = request()->modal_id;
+        $folders = []; 
+        try {
+            // Make the initial request to get folder entries
+            $response = Http::withToken($accessToken)->post('https://api.dropboxapi.com/2/files/list_folder', [
+                'path' => $path,
+                'recursive' => false,
+                'include_media_info' => false,
+                'include_deleted' => false,
+            ]);
+
+            if ($response->failed()) {
+                return response()->json(['error' => 'Failed to connect to Dropbox'], 500);
+            }
+
+            $data = $response->json();
+            
+            // Filter for folders only
+            foreach ($data['entries'] as $key => $entry) { 
+                $folders[$key]['id'] = $entry['id']; 
+                $folders[$key]['name'] = $entry['name']; 
+                $folders[$key]['tag'] = $entry['.tag']; 
+                $folders[$key]['path'] = $entry['path_display']; 
+            }
+
+            // Check if there are more results and continue fetching
+            while ($data['has_more']) {
+                $response = Http::withToken($accessToken)->post('https://api.dropboxapi.com/2/files/list_folder/continue', [
+                    'cursor' => $data['cursor'],
+                ]);
+
+                if ($response->failed()) {
+                    return response()->json(['error' => 'Failed to retrieve all folders'], 500);
+                }
+
+                $data = $response->json();
+
+                foreach ($data['entries'] as $key => $entry) {
+                    $folders[$key]['id'] = $entry['id']; 
+                    $folders[$key]['tag'] = $entry['.tag']; 
+                    $folders[$key]['name'] = $entry['name']; 
+                    $folders[$key]['path'] = $entry['path_display']; 
+                }
+            }
+            
+            return view('admin.dropbox.index',compact('folders','path','prev','modal_id'));
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function getDropBoxFileLink($id)
+    { 
+        $accessToken = config('app.dropbox_access_token'); 
+        
+        $url = 'https://api.dropboxapi.com/2/sharing/get_file_metadata';
+
+        $client = new Client();
+
+        try { 
+            $response = $client->post($url, [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $accessToken,
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => [
+                    'file' => $id
+                ]
+            ]);
+
+            // Decode the response to get the preview_url
+            $metadata = json_decode($response->getBody()->getContents(), true);
+            $previewUrl = $metadata['preview_url'];  // The preview URL of the file
+
+            return Redirect::away($previewUrl);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch file metadata', 'message' => $e->getMessage()], 500);
+        }
+    }
+
     public function index()
     {
         $settings1 = [

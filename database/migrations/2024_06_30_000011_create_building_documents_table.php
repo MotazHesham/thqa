@@ -18,6 +18,7 @@ class CreateBuildingDocumentsTable extends Migration
             $table->date('file_date_hijri')->nullable();
             $table->date('file_date_hijri_end')->nullable();
             $table->string('status')->default('active');
+            $table->string('dropbox_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

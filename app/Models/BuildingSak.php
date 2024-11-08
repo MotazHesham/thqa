@@ -34,6 +34,7 @@ class BuildingSak extends Model implements HasMedia
         'sak_num',
         'date',
         'date_hijri',
+        'dropbox_id',
         'created_at',
         'updated_at',
         'deleted_at',

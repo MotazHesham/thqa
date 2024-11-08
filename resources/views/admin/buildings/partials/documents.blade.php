@@ -83,6 +83,9 @@
                                     <a href="{{ $document->photo->getUrl() }}"
                                         class="details-btn">عرض
                                     </a>
+                                @endif 
+                                @if($document->dropbox_id)
+                                    <a target="_blanc" href="{{ route('admin.dropbox.getDropBoxFileLink',$document->dropbox_id ?? 0) }}"class="details-btn">عرض</a>
                                 @endif
                                 <form
                                     action="{{ route('admin.building-documents.destroy', $document->id) }}"

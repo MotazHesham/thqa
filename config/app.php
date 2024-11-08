@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
+    'dropbox_access_token' => env('DROPBOX_ACCESS_TOKEN', ''),
+    
     /*
     |--------------------------------------------------------------------------
     | Application Name

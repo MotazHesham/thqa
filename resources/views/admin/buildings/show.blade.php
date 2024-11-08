@@ -334,7 +334,7 @@
             <!-- End Product Details -->
         </div>
     </div>
-    
+
     <div class="modal fade" id="SakModal"  aria-labelledby="SakModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
@@ -346,6 +346,7 @@
                     <form method="POST" action="{{ route("admin.building-saks.store") }}" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="building_id" value="{{ $building->id }}">
+                        <input type="hidden" name="dropbox_id" class="dropboxinput">
                         <div class="row">
                             <div class="form-group col-lg-4">
                                 <label for="inputName" class="bold mb-2">رقم الصك</label>
@@ -382,9 +383,8 @@
                                 <br>
                                 <!-- <input type="file"> -->
                                 <div class="attach-file style--three">
-                                    <div class="upload-button">
-                                        Choose a file
-                                        <input class="file-input" type="file" name="photo">
+                                    <div class="upload-button" style="cursor: pointer" onclick="openDropBox('SakModal')">
+                                        Choose a file 
                                     </div>
                                 </div>
                                 <label class="file_upload mr-2">No file added</label>
@@ -411,6 +411,7 @@
                 <div class="modal-body">
                     <form method="POST" action="{{ route("admin.building-documents.store") }}" enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="dropbox_id" class="dropboxinput">
                         <input type="hidden" name="building_id" value="{{ $building->id }}">
                         <div class="row">
                             <!-- Form Group -->
@@ -492,14 +493,68 @@
             </div>
         </div>
     </div>
+    
+    <div class="modal fade" id="DropBoxModal"  aria-labelledby="DropBoxModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    DropBox
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">x</button>
+                </div>    
+                <div class="modal-body">
+                    <!-- Spinner to indicate loading -->
+                    <div id="loadingSpinner" style="display: none; text-align: center;">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden"> </span>
+                        </div>
+                    </div>
+                    <!-- Content will be loaded here -->
+                    <div id="modalContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('scripts')
     <script src="https://maps.google.com/maps/api/js?key=AIzaSyDjvU8Zqem3c-vJOpHCh4NmzB0xH8FBhQs&libraries=places&v=weekly">
     </script>
     <script src="{{ asset('hijri-date-picker-bootstrap/dist/js/bootstrap-hijri-datetimepicker.js?v2') }}"></script> 
-    <script>
-        
-            
+    <script> 
+            function openDropBox(modal_id){
+                $('#modalContent').html(null);  // Clear content
+                $('#loadingSpinner').show();    // Show spinner
+                $('#DropBoxModal').modal('show');
+
+                $.post('{{ route('admin.dropbox.index') }}', {
+                    _token: '{{ csrf_token() }}',
+                    modal_id: modal_id
+                }, function(data) {
+                    $('#loadingSpinner').hide();          // Hide spinner
+                    $('#modalContent').html(data);        // Load content
+                });
+            }   
+
+            function openDropBoxByPath(path,prev = '',modal_id) {
+                $('#modalContent').html(null);   // Clear content
+                $('#loadingSpinner').show();     // Show spinner
+
+                $.post('{{ route('admin.dropbox.index') }}', {
+                    _token: '{{ csrf_token() }}',
+                    path: path,
+                    prev: prev,
+                    modal_id: modal_id
+                }, function(data) {
+                    $('#loadingSpinner').hide();         // Hide spinner
+                    $('#modalContent').html(data);       // Load content
+                });
+            } 
+
+            function selectedDropBoxFile(id,name,modal_id){ 
+                $('#' + modal_id + ' .file_upload').html(name);
+                $('#' + modal_id + ' .dropboxinput').val(id);
+                $('#DropBoxModal').modal('hide');
+            }
+
             $(function () { 
                 initHijrDatePicker();
                 
@@ -596,4 +651,4 @@
                 });
             }
         </script>
-@endsection)
+@endsection
