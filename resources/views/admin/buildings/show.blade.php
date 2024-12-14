@@ -383,9 +383,16 @@
                                 <br>
                                 <!-- <input type="file"> -->
                                 <div class="attach-file style--three">
-                                    <div class="upload-button" style="cursor: pointer" onclick="openDropBox('SakModal')">
-                                        Choose a file 
-                                    </div>
+                                    @if(true) 
+                                        <div class="upload-button">
+                                            Choose a file
+                                            <input class="file-input" type="file" name="photo">
+                                        </div>
+                                    @else 
+                                        <div class="upload-button" style="cursor: pointer" onclick="openDropBox('SakModal')">
+                                            Choose a file 
+                                        </div>
+                                    @endif
                                 </div>
                                 <label class="file_upload mr-2">No file added</label>
                             </div>

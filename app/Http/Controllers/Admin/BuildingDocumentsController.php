@@ -58,12 +58,14 @@ class BuildingDocumentsController extends Controller
         if($request->has('folder_id')){
             $validatedRequest['building_folder_id'] = $request->folder_id;
         }else{ 
-            $building_folder = BuildingFolder::firstOrCreate([
-                'building_id' => $request->building_id,
-                'name' => $request->folder_name, 
-                'type' => 'document', 
-            ]);
-            $validatedRequest['building_folder_id'] = $building_folder->id;
+            if($request->folder_name){ 
+                $building_folder = BuildingFolder::firstOrCreate([
+                    'building_id' => $request->building_id,
+                    'name' => $request->folder_name, 
+                    'type' => 'document', 
+                ]);
+                $validatedRequest['building_folder_id'] = $building_folder->id;
+            }
         } 
         $buildingDocument = BuildingDocument::create($validatedRequest);
         if($request->photo != null){
