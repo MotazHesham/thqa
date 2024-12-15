@@ -379,20 +379,25 @@
                             <!-- End Form Group --> 
 
                             <div class="col-lg-4">
-                                <label for="inputName" class="bold mb-2">الملف</label>
+                                <label for="inputName" class="bold mb-2">الملف من دروب بوكس</label>
                                 <br>
                                 <!-- <input type="file"> -->
-                                <div class="attach-file style--three">
-                                    @if(true) 
-                                        <div class="upload-button">
-                                            Choose a file
-                                            <input class="file-input" type="file" name="photo">
-                                        </div>
-                                    @else 
-                                        <div class="upload-button" style="cursor: pointer" onclick="openDropBox('SakModal')">
-                                            Choose a file 
-                                        </div>
-                                    @endif
+                                <div class="attach-file style--three"> 
+                                    <div class="upload-button" style="cursor: pointer" onclick="openDropBox('SakModal')">
+                                        Choose a file
+                                    </div> 
+                                </div>
+                                <label class="file_upload mr-2"><span class="dropbox">No file added</span></label>
+                            </div>
+                            <div class="col-lg-4">
+                                <label for="inputName" class="bold mb-2">الملف من الجهاز</label>
+                                <br>
+                                <!-- <input type="file"> -->
+                                <div class="attach-file style--three"> 
+                                    <div class="upload-button">
+                                        Choose a file
+                                        <input class="file-input" type="file" name="photo">
+                                    </div> 
                                 </div>
                                 <label class="file_upload mr-2">No file added</label>
                             </div>
@@ -479,14 +484,25 @@
                             <!-- End Form Group --> 
 
                             <div class="col-lg-4">
-                                <label for="inputName" class="bold mb-2">الملف</label>
+                                <label for="inputName" class="bold mb-2">الملف من دروب بوكس</label>
                                 <br>
                                 <!-- <input type="file"> -->
-                                <div class="attach-file style--three">
+                                <div class="attach-file style--three"> 
+                                    <div class="upload-button" style="cursor: pointer" onclick="openDropBox('DocumentModal')">
+                                        Choose a file
+                                    </div> 
+                                </div>
+                                <label class="file_upload mr-2"><span class="dropbox">No file added</span></label>
+                            </div>
+                            <div class="col-lg-4">
+                                <label for="inputName" class="bold mb-2">الملف من الجهاز</label>
+                                <br>
+                                <!-- <input type="file"> -->
+                                <div class="attach-file style--three"> 
                                     <div class="upload-button">
                                         Choose a file
                                         <input class="file-input" type="file" name="photo">
-                                    </div>
+                                    </div> 
                                 </div>
                                 <label class="file_upload mr-2">No file added</label>
                             </div>
@@ -505,7 +521,7 @@
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    DropBox
+                    أختر الملف
                     <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">x</button>
                 </div>    
                 <div class="modal-body">
@@ -557,7 +573,7 @@
             } 
 
             function selectedDropBoxFile(id,name,modal_id){ 
-                $('#' + modal_id + ' .file_upload').html(name);
+                $('#' + modal_id + ' .file_upload .dropbox').html(name);
                 $('#' + modal_id + ' .dropboxinput').val(id);
                 $('#DropBoxModal').modal('hide');
             }

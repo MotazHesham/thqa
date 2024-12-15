@@ -38,7 +38,7 @@ class BuildingSaksController extends Controller
     }
 
     public function store(StoreBuildingSakRequest $request)
-    {
+    { 
         $validatedRequest = $request->all();
         if($request->has('folder_id')){
             $validatedRequest['building_folder_id'] = $request->folder_id;
