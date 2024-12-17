@@ -551,9 +551,12 @@
                 $.post('{{ route('admin.dropbox.index') }}', {
                     _token: '{{ csrf_token() }}',
                     modal_id: modal_id
-                }, function(data) {
+                }).done( function(data) {
                     $('#loadingSpinner').hide();          // Hide spinner
                     $('#modalContent').html(data);        // Load content
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    $('#loadingSpinner').hide();         // Hide spinner
+                    $('#modalContent').html(`<a class="btn btn-info" target="_blanc" href="{{route('profile.password.edit')}}">Please Update Dropbox Code</a>`)
                 });
             }   
 
@@ -566,9 +569,12 @@
                     path: path,
                     prev: prev,
                     modal_id: modal_id
-                }, function(data) {
+                }).done( function(data) {
                     $('#loadingSpinner').hide();         // Hide spinner
                     $('#modalContent').html(data);       // Load content
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    $('#loadingSpinner').hide();         // Hide spinner
+                    $('#modalContent').html(`<a class="btn btn-info" target="_blanc" href="{{route('profile.password.edit')}}">Please Update Dropbox Code</a>`)
                 });
             } 
 
@@ -667,7 +673,7 @@
                     folder_id: folder_id,
                     building_id: building_id,
                     type: type,
-                }, function(data) {
+                }).done( function(data) {
                     $('#AjaxModal .modal-dialog').html(null);
                     $('#AjaxModal').modal('show');
                     $('#AjaxModal .modal-dialog').html(data);

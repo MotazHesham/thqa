@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
-    'dropbox_access_token' => env('DROPBOX_ACCESS_TOKEN', ''),
+    'dropbox_refresh_token' => env('DROPBOX_REFRESH_TOKEN', ''),
+    'dropbox_key' => env('DROPBOX_KEY', ''),
+    'dropbox_secret' => env('DROPBOX_SECRET', ''),
     
     /*
     |--------------------------------------------------------------------------

@@ -11,12 +11,13 @@ Route::get('/home', function () {
     return redirect()->route('admin.home');
 });
 
-Auth::routes(); 
+Auth::routes();  
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth','staff']], function () {
 
     Route::get('dropbox/getDropBoxFileLink/{id}', 'HomeController@getDropBoxFileLink')->name('dropbox.getDropBoxFileLink');
     Route::post('dropbox/index', 'HomeController@dropbox')->name('dropbox.index');
+    Route::post('dropbox/update_refresh_token', 'HomeController@update_refresh_token')->name('dropbox.update_refresh_token');
 
     Route::get('/', 'HomeController@index')->name('home');
     // Permissions

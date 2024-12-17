@@ -6,18 +6,98 @@ use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 use App\Models\Building;
 use App\Models\BuildingDocument;
 use GuzzleHttp\Client;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
 class HomeController
 {
+    public function update_refresh_token(Request $request){
+        
+        // Your Dropbox App Key and Secret
+        $appKey = config('app.dropbox_key');
+        $appSecret = config('app.dropbox_secret');
+
+        // Base64-encode the App Key and Secret for Basic Authentication
+        $encodedAuth = base64_encode("{$appKey}:{$appSecret}");
+
+        // Step 1: Generate Access Token
+        $response = Http::withHeaders([
+            'Authorization' => 'Basic ' . $encodedAuth,
+            'Content-Type'  => 'application/x-www-form-urlencoded',
+        ])->asForm()->post('https://api.dropboxapi.com/oauth2/token', [
+            'grant_type' => 'authorization_code',
+            'code' => $request->code,
+        ]);
+
+        // Check if the token request succeeded
+        if ($response->failed()) { 
+            return response()->json($response->json(), 500);
+        }
+
+        // Retrieve the Access Token
+        $accessToken = $response->json('access_token');
+        $refreshToken = $response->json('refresh_token');
+        $this->overWriteEnvFile('DROPBOX_REFRESH_TOKEN', $refreshToken); 
+        Cache::put('dropbox_access_token', $accessToken,$response->json('expires_in')); 
+
+        return redirect()->route('profile.password.edit')->with('message', 'Dropbox Linked Successfully');
+    }
+    
+    public function overWriteEnvFile($type, $val)
+    { 
+        $path = base_path('.env');
+        if (file_exists($path)) {
+            $val = '"' . trim($val) . '"';
+            if (is_numeric(strpos(file_get_contents($path), $type)) && strpos(file_get_contents($path), $type) >= 0) {
+                file_put_contents($path, str_replace(
+                    $type . '="' . env($type) . '"',
+                    $type . '=' . $val,
+                    file_get_contents($path)
+                ));
+            } else {
+                file_put_contents($path, file_get_contents($path) . "\r\n" . $type . '=' . $val);
+            }
+        } 
+    }
+
+    public function getAccessToken(){
+        return Cache::remember('dropbox_access_token', 14400, function () { 
+            // Your Dropbox App Key and Secret
+            $appKey = config('app.dropbox_key');
+            $appSecret = config('app.dropbox_secret');
+            $refreshToken = config('app.dropbox_refresh_token');
+
+            // Base64-encode the App Key and Secret for Basic Authentication
+            $encodedAuth = base64_encode("{$appKey}:{$appSecret}");
+
+            // Step 1: Generate Access Token
+            $response = Http::withHeaders([
+                'Authorization' => 'Basic ' . $encodedAuth,
+                'Content-Type'  => 'application/x-www-form-urlencoded',
+            ])->asForm()->post('https://api.dropboxapi.com/oauth2/token', [
+                'grant_type' => 'refresh_token',
+                'refresh_token' => $refreshToken,
+            ]); 
+            if ($response->failed()) {
+                return null;
+            }
+            return $response->json('access_token');
+        });
+    }
+
     public function dropbox(){
 
-        $accessToken = config('app.dropbox_access_token'); 
+        $accessToken = $this->getAccessToken(); 
+
         $path = request()->has('path') && request()->path != null ? request()->path : ''; 
         $prev = request()->has('prev') && request()->prev != null ? request()->prev : '';
         $modal_id = request()->modal_id;
         $folders = []; 
+
+
         try {
             // Make the initial request to get folder entries
             $response = Http::withToken($accessToken)->post('https://api.dropboxapi.com/2/files/list_folder', [
@@ -72,7 +152,7 @@ class HomeController
 
     public function getDropBoxFileLink($id)
     { 
-        $accessToken = config('app.dropbox_access_token'); 
+        $accessToken = $this->getAccessToken(); 
         
         $url = 'https://api.dropboxapi.com/2/sharing/get_file_metadata';
 

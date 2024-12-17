@@ -14,6 +14,7 @@
                         <li><a data-toggle="tab" href="#info">البيانات الشخصية</a></li>
 
                         <li><a data-toggle="tab" href="#notifications">الإشعارات</a></li>
+                        <li><a data-toggle="tab" href="#dropbox">DropBox</a></li>
                     </ul>
                 </nav>
                 <!-- End Aside Body -->
@@ -31,23 +32,26 @@
                                 <div class="tab-pane fade show active" id="general">
                                     <h4 class="mb-4">تفاصيل الحساب</h4>
 
-                                    <form method="POST" action="{{ route("profile.password.updateProfile") }}" enctype="multipart/form-data">
+                                    <form method="POST" action="{{ route('profile.password.updateProfile') }}"
+                                        enctype="multipart/form-data">
                                         @csrf
                                         <div class="row">
                                             <div class="col-xl-4 col-lg-6">
                                                 <!-- Form Group -->
                                                 <div class="form-group mb-20">
                                                     <label for="userName" class="mb-2 font-14 bold black">الاسم</label>
-                                                    <input type="text" name="name" value="{{ old('name', auth()->user()->name) }}" id="userName" class="theme-input-style"
-                                                        placeholder="الاسم">
+                                                    <input type="text" name="name"
+                                                        value="{{ old('name', auth()->user()->name) }}" id="userName"
+                                                        class="theme-input-style" placeholder="الاسم">
                                                 </div>
                                                 <!-- End Form Group -->
                                                 <!-- Form Group -->
                                                 <div class="form-group mb-20">
                                                     <label for="email" class="mb-2 font-14 bold black">البريد
                                                         الالكتروني</label>
-                                                    <input type="email" id="email" name="email" class="theme-input-style"
-                                                        placeholder="البريد الالكتروني" value="{{ old('email', auth()->user()->email) }}">
+                                                    <input type="email" id="email" name="email"
+                                                        class="theme-input-style" placeholder="البريد الالكتروني"
+                                                        value="{{ old('email', auth()->user()->email) }}">
                                                 </div>
                                                 <!-- End Form Group -->
                                             </div>
@@ -56,28 +60,30 @@
                                                 <div class="form-group mb-20">
                                                     <label for="name" class="mb-2 font-14 bold black">الاسم
                                                         الاخير</label>
-                                                    <input type="text" id="name" name="last_name" class="theme-input-style"
-                                                        placeholder="الاسم الاخير" value="{{ old('last_name', auth()->user()->last_name) }}" >
+                                                    <input type="text" id="name" name="last_name"
+                                                        class="theme-input-style" placeholder="الاسم الاخير"
+                                                        value="{{ old('last_name', auth()->user()->last_name) }}">
                                                 </div>
                                                 <!-- End Form Group -->
                                                 <div class="form-group mb-20">
-                                                    <label for="name" class="mb-2 font-14 bold black"> 
+                                                    <label for="name" class="mb-2 font-14 bold black">
                                                         الهاتف</label>
-                                                    <input type="text" id="name" name="phone" class="theme-input-style"
-                                                        placeholder=" الجوال" value="{{ old('phone', auth()->user()->phone) }}" >
+                                                    <input type="text" id="name" name="phone"
+                                                        class="theme-input-style" placeholder=" الجوال"
+                                                        value="{{ old('phone', auth()->user()->phone) }}">
                                                 </div>
 
-                                            </div> 
+                                            </div>
                                             <div class="col-xl-4">
                                                 <div class="upload-avatar d-xl-flex align-items-center flex-column">
 
                                                     <div>
                                                         <div class="attach-file style--two rounded-0 align-items-end mb-3">
-                                                            <img src="{{ auth()->user()->photo ? auth()->user()->photo->getUrl() : asset('assets/img/avatar/user0.png') }}" class="profile-avatar"
-                                                                alt="">
+                                                            <img src="{{ auth()->user()->photo ? auth()->user()->photo->getUrl() : asset('assets/img/avatar/user0.png') }}"
+                                                                class="profile-avatar" alt="">
                                                             <div class="upload-button mb-20">
-                                                                <img src="{{ asset('assets/img/svg/gallery.svg')}}" alt=""
-                                                                    class="svg ml-2">
+                                                                <img src="{{ asset('assets/img/svg/gallery.svg') }}"
+                                                                    alt="" class="svg ml-2">
                                                                 <span>Upload Photo</span>
                                                                 <input class="file-input" type="file" id="fileUpload"
                                                                     accept="image/*" name="photo">
@@ -95,7 +101,7 @@
                                             <div class="col-lg-12">
                                                 <div class="button-group mt-30 mt-xl-n5">
                                                     <button type="submit" class="btn"> حفظ التعديلات</button>
-                                                    <a href="{{ route('admin.home') }}" 
+                                                    <a href="{{ route('admin.home') }}"
                                                         class="link-btn bg-transparent mr-3 soft-pink">إلغاء</a>
                                                 </div>
                                             </div>
@@ -106,28 +112,28 @@
                                 <div class="tab-pane fade" id="c_pass">
                                     <h4 class="mb-4"> تغيير كلمة المرور</h4>
 
-                                    <form method="POST" action="{{ route("profile.password.update") }}">
-                                        @csrf 
+                                    <form method="POST" action="{{ route('profile.password.update') }}">
+                                        @csrf
                                         <!-- Form Group -->
                                         <div class="form-group mb-20">
                                             <label for="newPassword" class="mb-2 font-14 bold black">كلمة
                                                 المرورالجديدة</label>
-                                            <input type="password" name="password" id="newPassword" class="theme-input-style"
-                                                placeholder="كلمة المرورالجديدة">
+                                            <input type="password" name="password" id="newPassword"
+                                                class="theme-input-style" placeholder="كلمة المرورالجديدة">
                                         </div>
                                         <!-- End Form Group -->
                                         <!-- Form Group -->
                                         <div class="form-group mb-20">
                                             <label for="retypePassword" class="mb-2 font-14 bold black">إعادة كلمة
                                                 المرور</label>
-                                            <input type="password" name="password_confirmation" id="retypePassword" class="theme-input-style"
-                                                placeholder="إعادة كلمة المرور">
+                                            <input type="password" name="password_confirmation" id="retypePassword"
+                                                class="theme-input-style" placeholder="إعادة كلمة المرور">
                                         </div>
                                         <!-- End Form Group -->
 
                                         <div class="button-group mt-30">
                                             <button type="submit" class="btn">حفظ التعديلات</button>
-                                            <a href="{{ route('admin.home') }}" 
+                                            <a href="{{ route('admin.home') }}"
                                                 class="link-btn bg-transparent mr-3 soft-pink">إلغاء</a>
                                         </div>
                                     </form>
@@ -146,9 +152,11 @@
 
                                 <div class="tab-pane fade" id="notifications">
                                     <h4 class="mb-5">الإشعارات</h4>
-                                    @if(count($alerts = \Auth::user()->userUserAlerts()->withPivot('read')->orderBy('created_at', 'ASC')->get()->reverse()) > 0)
-                                        @foreach($alerts as $alert)
-                                            <a href="{{ $alert->alert_link ? $alert->alert_link : "#" }}" class="item-single d-flex align-items-center">
+                                    @if (count(
+                                            $alerts = \Auth::user()->userUserAlerts()->withPivot('read')->orderBy('created_at', 'ASC')->get()->reverse()) > 0)
+                                        @foreach ($alerts as $alert)
+                                            <a href="{{ $alert->alert_link ? $alert->alert_link : '#' }}"
+                                                class="item-single d-flex align-items-center">
                                                 <div class="content">
                                                     <div class="mb-2">
                                                         <p class="time">
@@ -156,19 +164,23 @@
                                                         </p>
                                                     </div>
                                                     <p class="main-text">
-                                                        @if($alert->pivot->read === 0) <strong> @endif
-                                                            {{ $alert->alert_text }}
-                                                            @if($alert->pivot->read === 0) </strong> @endif
+                                                        @if ($alert->pivot->read === 0)
+                                                            <strong>
+                                                        @endif
+                                                        {{ $alert->alert_text }}
+                                                        @if ($alert->pivot->read === 0)
+                                                            </strong>
+                                                        @endif
                                                     </p>
                                                 </div>
                                             </a>
                                             <hr>
                                         @endforeach
-                                    @else 
+                                    @else
                                         <a href="#" class="item-single d-flex align-items-center">
                                             <div class="content">
                                                 <div class="mb-2">
-                                                    <p class="time"> 
+                                                    <p class="time">
                                                     </p>
                                                 </div>
                                                 <p class="main-text">
@@ -178,13 +190,41 @@
                                         </a>
                                     @endif
                                 </div>
+
+
+                                <div class="tab-pane fade" id="dropbox">
+                                    <h4 class="mb-4">Dropbox Setting</h4>
+                                    <div>
+                                        <a class="btn btn-info" target="_blanc"
+                                            href="https://www.dropbox.com/oauth2/authorize?client_id={{ config('app.dropbox_key') }}&response_type=code&token_access_type=offline">
+                                            Get DropBox Code
+                                        </a>
+
+                                        <form action="{{ route('admin.dropbox.update_refresh_token') }}" method="POST" class="mt-5">
+                                            @csrf
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group mb-20">
+                                                        <label class="mb-2 font-14 bold black">Code</label>
+                                                        <input type="text" name="code" class="theme-input-style" placeholder="Code From Dropbox">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <button type="submit" class="btn">Update</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- End Card -->
                 </div>
-
+                <!-- End Card -->
             </div>
+
         </div>
     </div>
 @endsection

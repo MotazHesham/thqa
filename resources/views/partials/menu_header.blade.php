@@ -52,7 +52,7 @@
             <div class="col-9 col-lg-11 col-xl-8">
                 <!-- Header Right -->
                 <div class="main-header-right d-flex justify-content-end">
-                    <ul class="nav"> 
+                    <ul class="nav">  
                         <li class="mysearch-header-nav d-none d-xl-flex">
                             <select class="searchable-field form-control   " placeholder="بحث" > 
                             </select>
